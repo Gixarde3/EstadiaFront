@@ -1,0 +1,7 @@
+
+{
+    "endpoint": "http://localhost:8000/api",
+    "endpointImage": "http://localhost:8000/perfiles/",
+    "endpointFile": "http://localhost:8000/excel/",
+    "endpointLocal":"http://localhost:5173/"
+}

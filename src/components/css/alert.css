@@ -1,0 +1,53 @@
+.alert{
+    width: 100vw;
+    height: 100vh;
+    position: fixed !important;
+    top:0;
+    left: 0;
+    background-color: rgba(0,0,0,0.8) !important;
+    z-index: 20;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+}
+.alert .content-alert{
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    width: 500px;
+    max-width: 90vw;
+    background-color: white;
+    height: auto;
+    align-items: center;
+    padding: 1rem;
+}
+.close-alert{
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    width: 30px;
+    height: auto;
+    cursor: pointer;
+}
+.alert p{
+    font-size: 20px;
+    margin-bottom: 1rem;
+}
+.alert .icon{
+    width: 100px;
+}
+.accept{
+    background-color: var(--button);
+    color: white;
+    padding: 0.5rem;
+    width: auto;
+    cursor: pointer;
+}
+.accept:hover{
+    background-color: var(--button-hover);
+}
+#closeAlert{
+    width: auto;
+    height: 30px;
+    cursor: pointer;
+}
