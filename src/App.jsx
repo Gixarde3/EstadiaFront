@@ -6,6 +6,8 @@ import Recuperar from './components/Recuperar';
 import DashboardLayout from './components/DashboardLayaout';
 import GestionUsuarios from './components/GestionUsuarios';
 import EditarUsuario from './components/EditarUsuario';
+import GestionCohortes from './components/GestionCohortes';
+import EditarCohorte from './components/EditarCohorte';
 function App() {
   return (
     <BrowserRouter>
@@ -19,6 +21,10 @@ function App() {
             <Route path="usuarios">
               <Route index element={<DashboardLayout Page={GestionUsuarios}/>}/>
               <Route path="editar/:id" element={<DashboardLayout Page={EditarUsuario}/>}/>
+            </Route>
+            <Route path="cohortes">
+              <Route index element={<DashboardLayout Page={GestionCohortes}/>}/>
+              <Route path="editar/:id" element={<DashboardLayout Page={EditarCohorte}/>}/>
             </Route>
           </Route>
         </Route>

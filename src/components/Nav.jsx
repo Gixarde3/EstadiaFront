@@ -39,9 +39,11 @@ function Nav() {
         <>
             <nav>
                 <div className="pages">
-                    <Link to="/cohortes">Cohortes</Link>
+                    <Link to="/dashboard/cohortes">Cohortes</Link>
                 </div>
-                <h1>Dashboard</h1>
+                <Link to="/dashboard">
+                    <h1>Dashboard</h1>
+                </Link>
                 <div className="perfil">
                     <h2>{user ? user.nombre : ""}</h2>
                     <Link to="/perfil" id="a-perfil">
