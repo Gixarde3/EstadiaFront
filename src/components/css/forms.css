@@ -29,6 +29,10 @@ form{
     margin-bottom: 1rem;
     
 }
+label{
+    font-weight: bold;
+}
+
 p{
     margin-bottom: 1rem !important;
 }
@@ -84,4 +88,7 @@ a{
     position: absolute;
     top:-60px;
     width: 100px;
+}
+.formulario-main{
+    min-height: 100vh;
 }

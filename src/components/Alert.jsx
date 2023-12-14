@@ -43,7 +43,7 @@ function Alert({ isOpen, title, message, kind, closeAlert, redirectRoute, asking
               </button>}
               {
                 asking ? (
-                  <button className="accept" onClick={closeAlert} style={{backgroundColor: '#FE2A2A'}}>
+                  <button className="login" onClick={closeAlert} style={{backgroundColor: '#FE2A2A'}}>
                     Cancelar
                   </button>
                 ) : ''

@@ -1,0 +1,103 @@
+.inputDashboard{
+    width: 100%;
+    margin-bottom: 1rem;
+}
+.dashboardForm{
+    width: 600px;
+}
+.testimonial-foto{
+    position: relative;
+    box-sizing: border-box;
+    display: flex;
+    align-items: center;
+    width: 100px;
+    height: 100px;
+    border-radius: 50%; 
+    overflow: hidden;
+}
+.hover-testimonial{
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 8;
+    background-color: rgba(0,0,0,0.3);
+    display: none;
+    padding: 0.5rem;
+}
+
+.label-photo:hover > .hover-testimonial{
+    display: block;
+    cursor: pointer;
+}
+.label-photo{
+    width: 100%;
+    height: 100%;
+}
+.label-photo img{
+    width: 100%;
+}
+input[type="file"]{
+    display: none;
+}
+.deleteButton{
+    position: absolute;
+    top: 0.3rem;
+    right: 0.3rem;
+    padding: 0.2rem;
+    background-color: red;
+    width: 30px;
+    height: 30px;
+}
+.deleteButton:hover{
+    cursor: pointer;
+}
+.deleteButton img{
+    width: 100%;
+    height: 100%;
+    filter: invert(1);
+}
+.result{
+    margin-top: 1rem;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    width: 100%;
+    padding: 0.5rem;
+    border: 5px solid black;
+    margin-bottom: 0.5rem;
+    background-color: var(--fondo-form);
+}
+.result p, .result h1{
+    margin-bottom: 0.3rem !important;
+}
+.fotoPerfilResultado{
+    height: 60px;
+    width: 60px;
+    overflow: hidden;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    margin-right: 1rem;
+}
+.fotoPerfilResultado img{
+    width: 100%;
+}
+.opciones a{
+    background-color: blue;
+    width: 30px;
+    height: 30px;
+    padding: 0.2rem;
+    position: absolute;
+    top: 0.3rem;
+    right: calc(0.3rem + 40px);
+}
+.opciones a img{
+    width:100%;
+    height: auto;
+    filter: invert(1);
+}
+#usuarios{
+    max-height: 100vh;
+    overflow-y: scroll;
+}

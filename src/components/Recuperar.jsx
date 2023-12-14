@@ -68,7 +68,7 @@ function Recuperar() {
         }
     };
     return (
-        <main>
+        <main className="formulario-main">
             <img src="/img/logo.png" alt="Logo Upemor" id="logo_upemor" />
             <form onSubmit={handleSubmit}>
                 <img src="/img/user_big.png" alt="Icono de usuario" id="icon_user" />
