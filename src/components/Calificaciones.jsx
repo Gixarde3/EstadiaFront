@@ -94,6 +94,22 @@ function Calificaciones() {
                 openAlert('Error inesperado con la descarga', `Error de descarga: ${error}`, 'error', null);
             }
     };
+    const procesarCalificacion = async(id) => {
+        const token = Cookies.get("token");
+        openAlert("Procesando calificacion", "Espere un momento por favor", "loading");
+        try{
+            const response = await axios.post(`${endpoint}/calificacion/procesar/${id}`, {token: token});
+            if(response.data.success){
+                openAlert("Calificacion procesada", "La calificacion se procesó correctamente", "success", null);
+                getCalificaciones();
+            }else{
+                openAlert("Error al procesar la calificacion", "Ocurrió un error inesperado al procesar la calificacion", "error", null);
+            }
+        }catch(error){
+            console.log(error);
+            openAlert("Error de conexión", "Ocurrió un error de conexión",  "error", null);
+        }
+    }
     return (<>
             <h1>Calificaciones</h1>
             <section id="calificaciones">
@@ -106,6 +122,9 @@ function Calificaciones() {
                             <p>{calificacion.periodo}</p>
                             <p>{calificacion.carrera}</p>
                             <p>{calificacion.procesado === 0 ? "No ha sido procesada" : "Procesada"}</p>
+                            <p>
+                                {calificacion.procesado === 0 ? <button type="button" className="login" onClick={() => procesarCalificacion(calificacion.id)}>Procesar</button> : null}
+                            </p>
                             <button className="login" type="button" onClick={()=>(handleDownload(calificacion.archivo))}>Descargar archivo</button>
                             {
                                 tipoUsuario === "3" ? (
