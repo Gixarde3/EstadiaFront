@@ -32,7 +32,7 @@ function CrearCohorte() {
         try{
             const response = await axios.post(endpoint + "/cohorte", formData);
             if(response.data.success){
-                openAlert("Cohorte registrado", "El cohorte se registró correctamente", "success", "/dashboard/cohortes");
+                openAlert("Cohorte registrado", "El cohorte se registró correctamente", "success", null);
             }else{
                 openAlert("Error al registrar al cohorte", "Ocurrió un error inesperado al registrar al cohorte", "error", null);
             }

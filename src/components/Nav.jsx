@@ -40,10 +40,10 @@ function Nav() {
             <nav>
                 <div className="pages">
                     <Link to="/dashboard/cohortes">Cohortes</Link>
+                    <Link to="/dashboard/usuarios">Usuarios</Link>
+                    <Link to="/dashboard/calificaciones">Calificaciones cuatrimestrales</Link>
+                    <Link to="/dashboard/grupos">Grupos</Link>
                 </div>
-                <Link to="/dashboard">
-                    <h1>Dashboard</h1>
-                </Link>
                 <div className="perfil">
                     <h2>{user ? user.nombre : ""}</h2>
                     <Link to="/perfil" id="a-perfil">

@@ -8,6 +8,8 @@ import GestionUsuarios from './components/GestionUsuarios';
 import EditarUsuario from './components/EditarUsuario';
 import GestionCohortes from './components/GestionCohortes';
 import EditarCohorte from './components/EditarCohorte';
+import GestionCalificaciones from './components/GestionCalificaciones';
+import EditarCalificaciones from './components/EditarCalificaciones';
 function App() {
   return (
     <BrowserRouter>
@@ -25,6 +27,10 @@ function App() {
             <Route path="cohortes">
               <Route index element={<DashboardLayout Page={GestionCohortes}/>}/>
               <Route path="editar/:id" element={<DashboardLayout Page={EditarCohorte}/>}/>
+            </Route>
+            <Route path="calificaciones">
+              <Route index element={<DashboardLayout Page={GestionCalificaciones}/>}/>
+              <Route path="editar/:id" element={<DashboardLayout Page={EditarCalificaciones}/>}/>
             </Route>
           </Route>
         </Route>
