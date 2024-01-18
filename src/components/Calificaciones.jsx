@@ -60,7 +60,8 @@ function Calificaciones() {
                 openAlert("Error al eliminar las calificaciones", "Ocurrió un error inesperado al eliminar las calificaciones", "error", null);
             }
         }catch(error){
-            openAlert("Error de conexión", "Ocurrió un error de conexión",  "error", "/");
+            openAlert("Error de conexión", "Ocurrió un error de conexión",  "error", null);
+            console.log(error);
         }
     }
     const getUsernameById = async(id) => {
