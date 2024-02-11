@@ -43,6 +43,7 @@ function Nav() {
                     <Link to="/dashboard/usuarios">Usuarios</Link>
                     <Link to="/dashboard/calificaciones">Calificaciones cuatrimestrales</Link>
                     <Link to="/dashboard/grupos">Grupos</Link>
+                    <Link to="/dashboard/bajas">Bajas</Link>
                 </div>
                 <div className="perfil">
                     <h2>{user ? user.nombre : ""}</h2>

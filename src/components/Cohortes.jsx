@@ -2,6 +2,7 @@ import Cookies from "js-cookie";
 import config from "./config.json";
 import Alert from "./Alert";
 import axios from "axios";
+import ReloadButton from "./ReloadButton";
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 function Cohortes() {
@@ -86,9 +87,61 @@ function Cohortes() {
             }
         });
     }
+    const procesarCalificacion = async(id) => {
+        const token = Cookies.get("token");
+        openAlert("Procesando calificacion", "Espere un momento por favor", "loading");
+        try{
+            const response = await axios.post(`${endpoint}/calificacion/procesar/${id}`, {token: token});
+            if(response.data.success){
+                openAlert("Calificacion procesada", "La calificacion se procesó correctamente", "success", null);
+                getCohortes();
+            }else{
+                openAlert("Error al procesar la calificacion", "Ocurrió un error inesperado al procesar la calificacion", "error", null);
+            }
+        }catch(error){
+            console.log(error);
+            openAlert("Error de conexión", "Ocurrió un error de conexión",  "error", null);
+        }
+    }
+    const descargarArchivo = (file) => {
+        try{
+            // Crea un enlace temporal para descargar el archivo
+            const enlace = document.createElement('a');
+            enlace.href = `${config.endpoint}/calificacion/download/${file}`;
+            enlace.download = file; // Cambia el nombre de descarga si es necesario
+        
+            // Simula un clic en el enlace para iniciar la descarga
+            enlace.style.display = 'none';
+            document.body.appendChild(enlace);
+            enlace.click();
+        
+            // Elimina el enlace después de la descarga
+            document.body.removeChild(enlace);
+        
+        }catch(error){
+            openAlert('Error inesperado con la descarga', `Error de descarga: ${error}`, 'error', null);
+        }
+    };
+    const handleDeleteCalificaciones = async(id) => {
+        const token = Cookies.get("token");
+        openAlert("Eliminando calificaciones", "Espere un momento por favor", "loading");
+        try{
+            const response = await axios.post(`${endpoint}/calificacion/delete/${id}`, {token: token});
+            if(response.data.success){
+                openAlert("Calificaciones eliminadas", "Las calificaciones se eliminaron correctamente", "success", null);
+                getCohortes();
+            }else{
+                openAlert("Error al eliminar las calificaciones", "Ocurrió un error inesperado al eliminar las calificaciones", "error", null);
+            }
+        }catch(error){
+            openAlert("Error de conexión", "Ocurrió un error de conexión",  "error", null);
+            console.log(error);
+        }
+    }
     return (<>
             <h1>Cohortes</h1>
-            <section id="cohortes">
+            <section id="cohortes" style={{position: 'relative', paddingTop:'calc(50px + 1rem)'}}>
+                <ReloadButton reloadFunction={getCohortes}/>
             {
                 cohortes.map((cohorte) => (
                     <div className="result" key={cohorte.id}>
@@ -96,7 +149,12 @@ function Cohortes() {
                             <h1>{cohorte.plan}</h1>
                             <p>{cohorte.anio}</p>
                             <p>{cohortesNames[cohorte.periodo]}</p>
-                            
+                            {cohorte.archivo ? <p>Archivo con las calificaciones: {cohorte.archivo}</p> : null}
+                            {cohorte.archivo && cohorte.procesado === 1 ? <p>Calificaciones procesadas</p> : <p>Calificaciones no procesadas</p>}
+                            {cohorte.archivo && cohorte.procesado !== 1 ? <p><button className="login" onClick={() => (procesarCalificacion(cohorte.id))}>Procesar calificaciones</button></p> : null}
+                            {cohorte.archivo ? <p><button className="login" onClick={() => (descargarArchivo(cohorte.archivo))}>Descargar calificaciones</button></p>: null}
+                            {cohorte.archivo ? <p><button className="login" onClick={() => (handleDeleteCalificaciones(cohorte.id))}>Eliminar calificaciones</button></p>: null}
+                            {cohorte.archivo && cohorte.procesado === 1 ? <p><button className="login"><Link to={`graficas/${cohorte.id}`} style={{color:'black', margin:0}}>Ver gráficas</Link></button></p> : null}
                             {
                                 tipoUsuario === "3" ? (
                                     <div className="opciones">

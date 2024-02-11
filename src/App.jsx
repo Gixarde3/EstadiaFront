@@ -10,6 +10,13 @@ import GestionCohortes from './components/GestionCohortes';
 import EditarCohorte from './components/EditarCohorte';
 import GestionCalificaciones from './components/GestionCalificaciones';
 import EditarCalificaciones from './components/EditarCalificaciones';
+import GestionBajas from './components/GestionBajas';
+import GraficasCohortes from './components/GraficasCohortes';
+
+/**
+ * 
+ * Rutas de la aplicación, cada página se encuentra organizada por sus posibles rutas para mantener un orden
+ */
 function App() {
   return (
     <BrowserRouter>
@@ -18,19 +25,26 @@ function App() {
           <Route index element={<Login/>}/>
           <Route path="recuperacion" element={<Recuperacion/>}/>
           <Route path="restaurar/:hash" element={<Recuperar/>}/>
+
           <Route path="dashboard">
+
             <Route index element={<Navigate to="/dashboard/usuarios" />} />
             <Route path="usuarios">
               <Route index element={<DashboardLayout Page={GestionUsuarios}/>}/>
               <Route path="editar/:id" element={<DashboardLayout Page={EditarUsuario}/>}/>
             </Route>
+
             <Route path="cohortes">
               <Route index element={<DashboardLayout Page={GestionCohortes}/>}/>
               <Route path="editar/:id" element={<DashboardLayout Page={EditarCohorte}/>}/>
+              <Route path="graficas/:id" element={<DashboardLayout Page={GraficasCohortes}/>}/>
             </Route>
+
             <Route path="calificaciones">
               <Route index element={<DashboardLayout Page={GestionCalificaciones}/>}/>
-              <Route path="editar/:id" element={<DashboardLayout Page={EditarCalificaciones}/>}/>
+            </Route>
+            <Route path="bajas">
+              <Route index element={<DashboardLayout Page={GestionBajas}/>}/>
             </Route>
           </Route>
         </Route>

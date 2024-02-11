@@ -5,7 +5,7 @@ import axios from "axios";
 import config from "./config.json";
 import Cookies from "js-cookie";
 
-function CrearCalificaciones() {
+function CrearBajas() {
     const endpoint = config.endpoint;
     const [cohortes, setCohortes] = useState([]);
     const [archivo, setArchivo] = useState(null);
@@ -48,33 +48,33 @@ function CrearCalificaciones() {
     const token = Cookies.get("token");
     const handleSubmit = async(event) => {
         event.preventDefault();
-        openAlert("Subiendo las calificaciones", "Espere un momento por favor", "loading");
+        openAlert("Subiendo las bajas", "Espere un momento por favor", "loading");
         const formData = new FormData();
         formData.append("archivo", archivo);
         formData.append("token", token);
         try{
-            const response = await axios.post(endpoint + "/calificacion/" + idCohorte, formData, {
+            const response = await axios.post(endpoint + "/baja/" + idCohorte, formData, {
                 headers: {
                     'Content-Type': 'multipart/form-data', // Configura el encabezado para enviar datos multipart/form-data
                 }
             });
             if(response.data.success){
-                openAlert("Calificaciones registradas", "Las calificaciones se registraron correctamente", "success", null);
+                openAlert("Bajas registradas", "Las bajas se registraron correctamente", "success", null);
             }else{
-                openAlert("Error al registrar las calificaciones", "Ocurrió un error inesperado al registrar las calificaciones: " + response.data.message, "error", null);
+                openAlert("Error al registrar las bajas", "Ocurrió un error inesperado al registrar las bajas: " + response.data.message, "error", null);
             }
         }catch(error){
             if(error.response.status === 401){
-                openAlert("Error al registrar las calificaciones", "No tienes permiso para registrar las calificaciones", "error", null);
+                openAlert("Error al registrar las bajas", "No tienes permiso para registrar las bajas", "error", null);
             }else{
-                openAlert("Error al registrar las calificaciones", "Ocurrió un error inesperado al registrar las calificaciones", "error", null);
+                openAlert("Error al registrar las bajas", "Ocurrió un error inesperado al registrar las bajas", "error", null);
                 console.log(error);
             }
         }
     }
     
     return (<>
-        <h2>Subir calificaciones</h2>
+        <h2>Subir bajas</h2>
         <form className="dashboardForm" onSubmit={handleSubmit}>
             <label htmlFor="Cohorte">Selecciona el cohorte</label>
             <select name="Cohorte" id="Cohorte" style={{marginBottom:'1rem'}} onChange={(event)=>(setIdCohorte(event.target.value))}>
@@ -92,7 +92,7 @@ function CrearCalificaciones() {
             {
                 archivo ? <p style={{marginBottom: "1rem"}}>Archivo seleccionado: {archivo.name}</p> : null
             }
-            <button className="login">Subir calificaciones</button>
+            <button className="login">Subir bajas</button>
         </form>
         <Alert 
                 isOpen={alertOpen}
@@ -107,4 +107,4 @@ function CrearCalificaciones() {
     </>);
 }
 
-export default CrearCalificaciones;
+export default CrearBajas;

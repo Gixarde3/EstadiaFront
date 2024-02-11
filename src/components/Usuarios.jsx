@@ -4,6 +4,7 @@ import Alert from "./Alert";
 import axios from "axios";
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
+import ReloadButton from "./ReloadButton";
 function Usuarios() {
     const tipoUsuario = Cookies.get("tipoUsuario");
     const token = Cookies.get("token");
@@ -77,7 +78,8 @@ function Usuarios() {
     return (
         <>
             <h1>Usuarios</h1>
-            <section id="usuarios">
+            <section id="usuarios" style={{position: 'relative', paddingTop:'calc(50px + 1rem)'}}>
+                <ReloadButton reloadFunction={getUsuarios}/>
             
             {
                 usuarios.map((usuario) => (
