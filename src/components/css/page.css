@@ -39,3 +39,14 @@ a:hover{
     max-height: 100vh;
     overflow-y: scroll;
 }
+.grafica{
+    max-width: 960px;
+}
+@media (max-width: 768px) {
+    .results{
+        max-width: 90%;
+    }
+    .grafica{
+        max-width: 90%;
+    }
+}

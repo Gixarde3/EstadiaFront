@@ -27,7 +27,7 @@ function Grupos() {
         try{
             const response = await axios.get(`${endpoint}/grupos`);
             if(response.data.success){
-                setGrupos(response.data.grupos);
+                setGrupos(response.data.resultados);
             }else{
                 openAlert("Error al obtener los grupos", "No se han podido obtener los grupos, intenta más tarde.", "error", null);
             }
@@ -83,7 +83,11 @@ function Grupos() {
             <h1>Grupos</h1>
             <section id="grupos" className="results" style={{position: 'relative', paddingTop:'calc(50px + 1rem)'}}>
                 <ReloadButton reloadFunction={()=>getGrupos()}/>
-            <Buscar setData={(data)=>(setGru(data))}/>
+            <Buscar setData={(data)=>(setGru(data))}
+                filters={["clave", "nombre", "letra", "grado", "cohorte"]}
+                aBuscar="grupo"
+                aBuscarPlural="grupos"
+            />
             {
                 grupos && grupos.map((grupo) => (
                     <div className="result" key={grupo.id}>

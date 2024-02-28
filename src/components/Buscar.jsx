@@ -5,21 +5,14 @@ import axios from "axios";
 import { useState} from "react";
 import Filter from "./Filter";
 import './css/buscar.css';
-function Buscar({setData}) {
+function Buscar({setData, filters, aBuscar, aBuscarPlural}) {
     const tipoUsuario = Cookies.get("tipoUsuario");
     const token = Cookies.get("token");
     const endpoint = config.endpoint;
     const endpointLocal = config.endpointLocal;
     const [alert, setAlert] = useState(null);
     const [alertOpen, setAlertOpen] = useState(false);
-    const filters = {
-        1: "clave",
-        2: "nombre",
-        3: "letra",
-        4: "grado",
-        5: "cohorte"
-    }
-    const [filter, setFilter] = useState("nombre");
+    const [filter, setFilter] = useState(filters[0]);
     const [search, setSearch] = useState("");
     const openAlert = (title, message, kind, redirectRoute, asking, onAccept) => {
         setAlert({ title: title, message: message, kind: kind, redirectRoute: redirectRoute, asking: asking, onAccept: onAccept});
@@ -34,9 +27,9 @@ function Buscar({setData}) {
         openAlert("Buscando", "Espere un momento por favor", "loading");
         if(search === ""){
             try{
-                const response = await axios.get(`${endpoint}/grupos`);
+                const response = await axios.get(`${endpoint}/${aBuscarPlural}`);
                 if(response.data.success){
-                    setData(response.data.grupos);
+                    setData(response.data.resultados);
                     closeAlert();
                 }else{
                     openAlert("Error al buscar", "No se han podido obtener los resultados, intenta más tarde.", "error", null);
@@ -47,9 +40,9 @@ function Buscar({setData}) {
             }
         }else{
             try{
-                const response = await axios.get(`${endpoint}/grupo/${filter}/${search}`);
+                const response = await axios.get(`${endpoint}/${aBuscar}/${filter}/${search}`);
                 if(response.data.success){
-                    setData(response.data.grupos);
+                    setData(response.data.resultados);
                     closeAlert();
                 }else{
                     openAlert("Error al buscar", "No se han podido obtener los resultados, intenta más tarde.", "error", null);
@@ -62,9 +55,9 @@ function Buscar({setData}) {
     }
     return (
     <>
-        <div id="search" className="search">
+        <div id="search" className="search result">
             <form className="row-search" onSubmit={handleSubmitSearch}>
-                <Filter setValue={(value) => (setFilter(filters[value]))}/>
+                <Filter filters={filters} setValue={(value) => (setFilter(filters[value]))}/>
                 <input type="text" name="title-search" className="title-search" placeholder={`Ingresa un(a) ${filter} para buscar`} onChange = {(event) => {setSearch(event.target.value)}}/>
                 <button type="submit" className="login btn-buscar" 
                     data-tooltip-id="tooltip"

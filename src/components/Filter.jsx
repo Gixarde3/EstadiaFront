@@ -1,7 +1,7 @@
 import config from './config.json';
 import { useState } from 'react';
 import './css/filter.css';
-function Filter({setValue}) {
+function Filter({setValue, filters}) {
     const [filter, setFilter] = useState(0);
     const [isOpen, setIsOpen] = useState(false);
     const endpointLocal = config.endpointLocal;
@@ -24,21 +24,11 @@ function Filter({setValue}) {
                 <img className={`select ${isOpen ? "open" : ""}`} src={`${endpointLocal}img/flecha_abajo.png`} alt="Icono para seleccionar" />
             </button>
             <div className={`filter-options ${isOpen ? "open" : ""}`}>
-                <button className='filter-option' type="button" onClick = {() => {changeFilter(1)}}>
-                    Clave
-                </button>
-                <button className='filter-option' type="button" onClick = {() => {changeFilter(2)}}>
-                    Nombre
-                </button>
-                <button className='filter-option' type="button" onClick = {() => {changeFilter(3)}}>
-                    Letra
-                </button>
-                <button className='filter-option' type="button" onClick = {() => {changeFilter(4)}}>
-                    Grado
-                </button>
-                <button className='filter-option' type="button" onClick = {() => {changeFilter(5)}}>
-                    Cohorte
-                </button>
+                {
+                    filters.map((filter, index) => (
+                        <button key={index} type="button" onClick = {() => {changeFilter(index)}} className='filter-option'>{filter}</button>
+                    ))
+                }
             </div>
         </div>
         );
