@@ -33,9 +33,10 @@ function Login() {
         try{
             const response = await axios.post(`${endpoint}/login`, data);
             if(response.data.success === true){
-                Cookies.set("token", response.data.token, { expires: 1 });
-                Cookies.set("email", response.data.email, { expires: 1 });
-                Cookies.set("tipoUsuario", response.data.tipoUsuario, { expires: 1 });
+                const expirationTime = new Date(new Date().getTime() + 15 * 60 * 1000);
+                Cookies.set("token", response.data.token, { expires: expirationTime });
+                Cookies.set("email", response.data.email, { expires: expirationTime });
+                Cookies.set("tipoUsuario", response.data.tipoUsuario, { expires: expirationTime });
                 closeAlert();
                 navigate("/dashboard");
             }else{

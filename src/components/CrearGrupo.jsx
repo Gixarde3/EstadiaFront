@@ -5,16 +5,19 @@ import axios from "axios";
 import config from "./config.json";
 import Cookies from "js-cookie";
 
-function CrearCalificaciones() {
+function CrearGrupo() {
     const endpoint = config.endpoint;
     const [cohortes, setCohortes] = useState([]);
-    const [archivo, setArchivo] = useState(null);
     const [alert, setAlert] = useState(null);
     const [alertOpen, setAlertOpen] = useState(false);
     const [idCohorte, setIdCohorte] = useState(0);
     const [periodo, setPeriodo] = useState("P");
     const [anio, setAnio] = useState(0);
     const [plan, setPlan] = useState("");
+    const [clave, setClave] = useState("");
+    const [nombre, setNombre] = useState("");
+    const [letra, setLetra] = useState("");
+    const [grado, setGrado] = useState(0);
     const openAlert = (title, message, kind, redirectRoute, asking, onAccept) => {
         setAlert({ title: title, message: message, kind: kind, redirectRoute: redirectRoute, asking: asking, onAccept: onAccept});
         setAlertOpen(true);
@@ -22,60 +25,6 @@ function CrearCalificaciones() {
     const closeAlert = () => {
         setAlert(null);
         setAlertOpen(false);
-    }
-
-    const handleFileUpload = (e) => {
-        try{
-            setArchivo(e.target.files[0]);
-        }catch(error){
-            openAlert("Error al subir el archivo", "Ocurrió un error inesperado al subir el archivo", "error", null);
-        }
-    };
-    const handleSubmitCohorte = async(event) => {
-        event.preventDefault();
-        openAlert("Registrando al cohorte y subiendo calificaciones", "Espere un momento por favor", "loading");
-        const formData = new FormData();
-        formData.append("periodo", periodo);
-        formData.append("anio", anio);
-        formData.append("plan", plan);
-        formData.append("token", Cookies.get("token"));
-        try{
-            const response = await axios.post(endpoint + "/cohorte", formData);
-            if(response.data.success){
-                const formData = new FormData();
-                formData.append("archivo", archivo);
-                formData.append("token", token);
-                try{
-                    const response = await axios.post(endpoint + "/calificacion/" + response.data.cohorte, formData, {
-                        headers: {
-                            'Content-Type': 'multipart/form-data', // Configura el encabezado para enviar datos multipart/form-data
-                        }
-                    });
-                    if(response.data.success){
-                        openAlert("Calificaciones registradas", "Las calificaciones se registraron correctamente", "success", null);
-                    }else{
-                        openAlert("Error al registrar las calificaciones", "Ocurrió un error inesperado al registrar las calificaciones: " + response.data.message, "error", null);
-                    }
-                }catch(error){
-                    if(error.response.status === 401){
-                        openAlert("Error al registrar las calificaciones", "No tienes permiso para registrar las calificaciones", "error", null);
-                    }else{
-                        openAlert("Error al registrar las calificaciones", "Ocurrió un error inesperado al registrar las calificaciones", "error", null);
-                        console.log(error);
-                    }
-                }
-
-            }else{
-                openAlert("Error al registrar al cohorte", "Ocurrió un error inesperado al registrar al cohorte", "error", null);
-            }
-        }catch(error){
-            if(error.response.status === 401){
-                openAlert("Error al registrar al cohorte", "No tienes permiso para registrar al cohorte", "error", null);
-            }else{
-                openAlert("Error al registrar al cohorte", "Ocurrió un error inesperado al registrar al cohorte", "error", null);
-            }
-        
-        }
     }
     useEffect(()=>{
         const getCohortes = async() => {
@@ -115,7 +64,7 @@ function CrearCalificaciones() {
     
     const handleSubmit = async(event) => {
         event.preventDefault();
-        openAlert("Subiendo las calificaciones", "Espere un momento por favor", "loading");
+        openAlert("Subiendo el grupo", "Espere un momento por favor", "loading");
         const token = Cookies.get("token");
         try{
             if(idCohorte == 0){
@@ -127,17 +76,17 @@ function CrearCalificaciones() {
                 const response = await axios.post(endpoint + "/cohorte", formData);
                 if(response.data.success){
                     const formData2 = new FormData();
-                    formData2.append("archivo", archivo);
+                    formData2.append("clave", clave);
+                    formData2.append("nombre", nombre);
+                    formData2.append("letra", letra);
+                    formData2.append("grado", grado);
+                    formData2.append("cohorte", response.data.cohorte);
                     formData2.append("token", token);
-                    const response2 = await axios.post(endpoint + "/calificacion/" + response.data.cohorte, formData2, {
-                        headers: {
-                            'Content-Type': 'multipart/form-data', // Configura el encabezado para enviar datos multipart/form-data
-                        }
-                    });
+                    const response2 = await axios.post(endpoint + "/grupo", formData2);
                     if(response2.data.success){
-                        openAlert("Calificaciones registradas", "Las calificaciones se registraron correctamente", "success", null);
+                        openAlert("Grupo registradas", "El grupo se registraron correctamente", "success", null);
                     }else{
-                        openAlert("Error al registrar las calificaciones", "Ocurrió un error inesperado al registrar las calificaciones: " + response2.data.message, "error", null);
+                        openAlert("Error al registrar el grupo", "Ocurrió un error inesperado al registrar el grupo: " + response.data.message, "error", null);
                     }
                 }else{
                     openAlert("Error al registrar al cohorte", "Ocurrió un error inesperado al registrar al cohorte", "error", null);
@@ -145,31 +94,31 @@ function CrearCalificaciones() {
                 }
             }else{
                 const formData = new FormData();
-                formData.append("archivo", archivo);
+                formData.append("clave", clave);
+                formData.append("nombre", nombre);
+                formData.append("letra", letra);
+                formData.append("grado", grado);
+                formData.append("cohorte", idCohorte);
                 formData.append("token", token);
-                const response = await axios.post(endpoint + "/calificacion/" + idCohorte, formData, {
-                    headers: {
-                        'Content-Type': 'multipart/form-data', // Configura el encabezado para enviar datos multipart/form-data
-                    }
-                });
+                const response = await axios.post(endpoint + "/grupo", formData);
                 if(response.data.success){
-                    openAlert("Calificaciones registradas", "Las calificaciones se registraron correctamente", "success", null);
+                    openAlert("Grupo registradas", "El grupo se registraron correctamente", "success", null);
                 }else{
-                    openAlert("Error al registrar las calificaciones", "Ocurrió un error inesperado al registrar las calificaciones: " + response.data.message, "error", null);
+                    openAlert("Error al registrar el grupo", "Ocurrió un error inesperado al registrar el grupo: " + response.data.message, "error", null);
                 }
             }
         }catch(error){
             if(error.response.status === 401){
-                openAlert("Error al registrar las calificaciones", "No tienes permiso para registrar las calificaciones", "error", null);
+                openAlert("Error al registrar el grupo", "No tienes permiso para registrar el grupo", "error", null);
             }else{
-                openAlert("Error al registrar las calificaciones", "Ocurrió un error inesperado al registrar las calificaciones", "error", null);
+                openAlert("Error al registrar el grupo", "Ocurrió un error inesperado al registrar el grupo", "error", null);
                 console.log(error);
             }
         }
     }
     
     return (<>
-        <h2>Subir calificaciones</h2>
+        <h2>Crear grupo</h2>
         <form className="dashboardForm" onSubmit={handleSubmit}>
             <label htmlFor="Cohorte">Selecciona el cohorte</label>
             <select name="Cohorte" id="Cohorte" style={{marginBottom:'1rem'}} onChange={(event)=>(setIdCohorte(event.target.value))}>
@@ -203,14 +152,23 @@ function CrearCalificaciones() {
                 value={plan}
                 disabled={idCohorte != 0}
             required/>
-            <label htmlFor="Archivo" className="login" style={{marginBottom: "1rem"}}>Selecciona el archivo</label>
-            <input type="file" name="Archivo" id="Archivo" className="inputDashboard" 
-                onChange={handleFileUpload} style={{display: "none"}}
+            <label htmlFor="clave">Clave del grupo</label>
+            <input type="text" name="clave" id="clave" className="inputDashboard" 
+                onChange={(e) => setClave(e.target.value)}
+                required/>
+            <label htmlFor="nombre">Nombre del grupo</label>
+            <input type="text" name="nombre" id="nombre" className="inputDashboard"
+                onChange={(e) => setNombre(e.target.value)} 
+                required/>
+            <label htmlFor="letra">Letra del grupo</label>
+            <input type="text" maxLength={1} className="inputDashboard" 
+                onChange={(e) => setLetra(e.target.value)}
             required/>
-            {
-                archivo ? <p style={{marginBottom: "1rem"}}>Archivo seleccionado: {archivo.name}</p> : null
-            }
-            <button className="login">Subir calificaciones</button>
+            <label htmlFor="grado">Grado del grupo</label>
+            <input type="number" name="grado" id="grado" className="inputDashboard" 
+                onChange={(e) => setGrado(e.target.value)}
+                required/>
+            <button className="login">Crear grupo</button>
         </form>
         <Alert 
                 isOpen={alertOpen}
@@ -225,4 +183,4 @@ function CrearCalificaciones() {
     </>);
 }
 
-export default CrearCalificaciones;
+export default CrearGrupo;

@@ -9,9 +9,10 @@ import EditarUsuario from './components/EditarUsuario';
 import GestionCohortes from './components/GestionCohortes';
 import EditarCohorte from './components/EditarCohorte';
 import GestionCalificaciones from './components/GestionCalificaciones';
-import EditarCalificaciones from './components/EditarCalificaciones';
 import GestionBajas from './components/GestionBajas';
 import GraficasCohortes from './components/GraficasCohortes';
+import GestionGrupos from './components/GestionGrupos';
+import EditarGrupos from './components/EditarGrupos';
 
 /**
  * 
@@ -45,6 +46,10 @@ function App() {
             </Route>
             <Route path="bajas">
               <Route index element={<DashboardLayout Page={GestionBajas}/>}/>
+            </Route>
+            <Route path="grupos">
+              <Route index element={<DashboardLayout Page={GestionGrupos}/>}/>
+              <Route path="editar/:id" element={<DashboardLayout Page={EditarGrupos}/>}/>
             </Route>
           </Route>
         </Route>

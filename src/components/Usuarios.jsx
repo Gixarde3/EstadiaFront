@@ -78,7 +78,7 @@ function Usuarios() {
     return (
         <>
             <h1>Usuarios</h1>
-            <section id="usuarios" style={{position: 'relative', paddingTop:'calc(50px + 1rem)'}}>
+            <section id="usuarios" className="results" style={{position: 'relative', paddingTop:'calc(50px + 1rem)'}}>
                 <ReloadButton reloadFunction={getUsuarios}/>
             
             {

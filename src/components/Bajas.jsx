@@ -110,7 +110,7 @@ function Bajas() {
     };
     return (<>
         <h1>Bajas</h1>
-            <section id="bajas" style={{position: 'relative', paddingTop:'calc(50px + 1rem)'}}>
+            <section id="bajas" className="results" style={{position: 'relative', paddingTop:'calc(50px + 1rem)'}}>
                 <ReloadButton reloadFunction={getBajas}/>
             {
                 bajas.map((baja) => (
