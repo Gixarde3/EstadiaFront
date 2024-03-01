@@ -7,11 +7,10 @@ import Cookies from "js-cookie";
 
 function CrearBajas() {
     const endpoint = config.endpoint;
-    const [cohortes, setCohortes] = useState([]);
     const [archivo, setArchivo] = useState(null);
     const [alert, setAlert] = useState(null);
     const [alertOpen, setAlertOpen] = useState(false);
-    const [idCohorte, setIdCohorte] = useState(0);
+    const [periodo, setPeriodo] = useState("");
     const openAlert = (title, message, kind, redirectRoute, asking, onAccept) => {
         setAlert({ title: title, message: message, kind: kind, redirectRoute: redirectRoute, asking: asking, onAccept: onAccept});
         setAlertOpen(true);
@@ -28,23 +27,6 @@ function CrearBajas() {
             openAlert("Error al subir el archivo", "Ocurrió un error inesperado al subir el archivo", "error", null);
         }
     };
-
-    useEffect(()=>{
-        const getCohortes = async() => {
-            try{
-                const cohortes = await axios.get(endpoint + "/cohortes");
-                if(cohortes.data.success){
-                    setCohortes(cohortes.data.cohortes);
-                }else{
-                    openAlert("Error al obtener los cohortes", "No se han podido obtener los cohortes, intenta más tarde.", "error", null);
-                }
-            }catch(e){
-                openAlert("Error de conexión", `La petición ha fallado por ${e}`, "error", null);
-            }
-            
-        };
-        getCohortes();
-    }, [])
     const token = Cookies.get("token");
     const handleSubmit = async(event) => {
         event.preventDefault();
@@ -52,8 +34,9 @@ function CrearBajas() {
         const formData = new FormData();
         formData.append("archivo", archivo);
         formData.append("token", token);
+        formData.append("periodo", periodo);
         try{
-            const response = await axios.post(endpoint + "/baja/" + idCohorte, formData, {
+            const response = await axios.post(endpoint + "/baja", formData, {
                 headers: {
                     'Content-Type': 'multipart/form-data', // Configura el encabezado para enviar datos multipart/form-data
                 }
@@ -76,15 +59,8 @@ function CrearBajas() {
     return (<>
         <h2>Subir bajas</h2>
         <form className="dashboardForm" onSubmit={handleSubmit}>
-            <label htmlFor="Cohorte">Selecciona el cohorte</label>
-            <select name="Cohorte" id="Cohorte" style={{marginBottom:'1rem'}} onChange={(event)=>(setIdCohorte(event.target.value))}>
-                <option value="">Selecciona el cohorte</option>
-                {
-                    cohortes.map((co) => {
-                        return <option value={co.id} key={co.id}>{co.plan}</option>
-                    })
-                }
-            </select>
+            <label htmlFor="periodo">Ingresa el periodo</label>
+            <input type="text" name="periodo" id="periodo" onChange={(e)=>setPeriodo(e.target.value)} className="inputDashboard" placeholder="Ingresa el periodo, por ejemplo I2024"/>
             <label htmlFor="Archivo" className="login" style={{marginBottom: "1rem"}}>Selecciona el archivo</label>
             <input type="file" name="Archivo" id="Archivo" className="inputDashboard" 
                 onChange={handleFileUpload} style={{display: "none"}}

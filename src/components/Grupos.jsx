@@ -84,7 +84,7 @@ function Grupos() {
             <section id="grupos" className="results" style={{position: 'relative', paddingTop:'calc(50px + 1rem)'}}>
                 <ReloadButton reloadFunction={()=>getGrupos()}/>
             <Buscar setData={(data)=>(setGru(data))}
-                filters={["clave", "nombre", "letra", "grado", "cohorte"]}
+                filters={["clave", "nombre", "letra", "grado"]}
                 aBuscar="grupo"
                 aBuscarPlural="grupos"
             />
@@ -93,10 +93,10 @@ function Grupos() {
                     <div className="result" key={grupo.id}>
                         <div className="info">
                             <h1>{grupo.clave}</h1>
-                            <h2>{grupo.cohorte}</h2>
+                            <h2>{grupo.periodo}</h2>
                             <p>{grupo.nombre}</p>
                             <p>{grupo.plan}</p>
-                            {grupo.grado ? <p>{grupo.grado}</p> : <p>Este grupo fue creado por importación, no tiene grupo, porfavor agrega uno editando este grupo</p>}
+                            {grupo.grado ? <p>{grupo.grado}</p> : <p>Este grupo fue creado por importación, no tiene grado, porfavor agrega uno editando este grupo</p>}
                             
                             {
                                 tipoUsuario === "3" ? (

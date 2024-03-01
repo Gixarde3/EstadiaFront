@@ -5,7 +5,7 @@ import axios from "axios";
 import ReloadButton from "./ReloadButton";
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
-function Bajas() {
+function Calificaciones() {
     const tipoUsuario = Cookies.get("tipoUsuario");
     const token = Cookies.get("token");
     const endpoint = config.endpoint;
@@ -13,7 +13,7 @@ function Bajas() {
     const endpointLocal = config.endpointLocal;
     const [alert, setAlert] = useState(null);
     const [alertOpen, setAlertOpen] = useState(false);
-    const [bajas, setBajas] = useState([]);
+    const [calificaciones, setCalificaciones] = useState([]);
     const cohortesNames = {
         "P": "Primavera",
         "O": "Otoño",
@@ -28,28 +28,28 @@ function Bajas() {
         setAlertOpen(false);
     }
     useEffect(() => {
-        const getBajas = async() => {
+        const getCalificaciones = async() => {
             try{
-                const response = await axios.get(`${endpoint}/bajas`);
+                const response = await axios.get(`${endpoint}/calificaciones`);
                 if(response.data.success){
-                    setBajas(response.data.bajas);
+                    setCalificaciones(response.data.calificaciones);
                 }else{
-                    openAlert("Error al obtener las bajas", "No se han podido obtener las bajas, intenta más tarde.", "error", null);
+                    openAlert("Error al obtener las calificaciones", "No se han podido obtener las calificaciones, intenta más tarde.", "error", null);
                 }
             }catch(error){
                 openAlert("Error de conexión", `La petición ha fallado por ${error}`, "error", null);
                 console.log(error);
             }
         }
-        getBajas();
+        getCalificaciones();
     }, [tipoUsuario, token, endpoint]);
-    const getBajas = async() => {
+    const getCalificaciones = async() => {
         try{
-            const response = await axios.get(`${endpoint}/bajas`);
+            const response = await axios.get(`${endpoint}/calificaciones`);
             if(response.data.success){
-                setBajas(response.data.bajas);
+                setCalificaciones(response.data.calificaciones);
             }else{
-                openAlert("Error al obtener las bajas", "No se han podido obtener las bajas, intenta más tarde.", "error", null);
+                openAlert("Error al obtener las calificaciones", "No se han podido obtener las calificaciones, intenta más tarde.", "error", null);
             }
         }catch(error){
             openAlert("Error de conexión", `La petición ha fallado por ${error}`, "error", null);
@@ -57,16 +57,16 @@ function Bajas() {
         }
     }
     const handleDelete = async(id) => {
-        openAlert("Eliminando baja", "Espere un momento por favor", "loading");
+        openAlert("Eliminando calificacion", "Espere un momento por favor", "loading");
         try{
-            const response = await axios.post(`${endpoint}/baja/delete/${id}`,{
+            const response = await axios.post(`${endpoint}/calificacion/delete/${id}`,{
                 token: token
             });
             if(response.data.success){
-                openAlert("Baja eliminada", "La baja ha sido eliminada", "success", null);
-                getBajas();
+                openAlert("Baja eliminada", "La calificacion ha sido eliminada", "success", null);
+                getCalificaciones();
             }else{
-                openAlert("Error al eliminar la baja", "No se ha podido eliminar la baja, intenta más tarde.", "error", null);
+                openAlert("Error al eliminar la calificacion", "No se ha podido eliminar la calificacion, intenta más tarde.", "error", null);
             }
         }catch(error){
             openAlert("Error de conexión", `La petición ha fallado por ${error}`, "error", null);
@@ -74,16 +74,16 @@ function Bajas() {
         }
     }
     const procesarCalificacion = async(id) => {
-        openAlert("Procesando bajas", "Espere un momento por favor", "loading");
+        openAlert("Procesando calificaciones", "Espere un momento por favor", "loading");
         try{
-            const response = await axios.post(`${endpoint}/baja/procesar/${id}`,{
+            const response = await axios.post(`${endpoint}/calificacion/procesar/${id}`,{
                 token: token
             });
             if(response.data.success){
-                openAlert("Bajas procesadas", "Las bajas han sido procesadas", "success", null);
-                getBajas();
+                openAlert("Calificaciones procesadas", "Las calificaciones han sido procesadas", "success", null);
+                getCalificaciones();
             }else{
-                openAlert("Error al procesar las bajas", "No se han podido procesar las bajas, intenta más tarde." + response.data.message, "error", null);
+                openAlert("Error al procesar las calificaciones", "No se han podido procesar las calificaciones, intenta más tarde." + response.data.message, "error", null);
             }
         }catch(error){
             openAlert("Error de conexión", `La petición ha fallado por ${error}`, "error", null);
@@ -94,7 +94,7 @@ function Bajas() {
         try{
             // Crea un enlace temporal para descargar el archivo
             const enlace = document.createElement('a');
-            enlace.href = `${config.endpoint}/baja/download/${id}`;
+            enlace.href = `${config.endpoint}/calificacion/download/${id}`;
             enlace.download = file; // Cambia el nombre de descarga si es necesario
             // Simula un clic en el enlace para iniciar la descarga
             enlace.style.display = 'none';
@@ -109,30 +109,31 @@ function Bajas() {
         }
     };
     return (<>
-        <h1>Bajas</h1>
-            <section id="bajas" className="results" style={{position: 'relative', paddingTop:'calc(50px + 1rem)'}}>
-                <ReloadButton reloadFunction={getBajas}/>
+        <h1>Calificaciones</h1>
+            <section id="calificaciones" className="results" style={{position: 'relative', paddingTop:'calc(50px + 1rem)'}}>
+                <ReloadButton reloadFunction={getCalificaciones}/>
             {
-                bajas.map((baja) => (
-                    <div className="result" key={baja.id}>
+                calificaciones.map((calificacion) => (
+                    <div className="result" key={calificacion.id}>
                         <div className="info">
-                            <h1>{baja.periodo}</h1>
-                            <p>{baja.anio}</p>
-                            {baja.archivo ? <p>Archivo con las bajas: {baja.archivo}</p> : null}
-                            {baja.archivo && baja.procesado === 1 ? <p>Bajas procesadas</p> : <p>Bajas no procesadas</p>}
-                            {baja.archivo && baja.procesado !== 1 ? <p><button className="login" onClick={() => (procesarCalificacion(baja.id))}>Procesar bajas</button></p> : null}
-                            {baja.archivo ? <p><button className="login" onClick={() => (descargarArchivo(baja.id, baja.ar))}>Descargar bajas</button></p>: null}
+                            <h1>{calificacion.periodo}</h1>
+                            <p>{calificacion.anio}</p>
+                            {calificacion.archivo ? <p>Archivo con las calificaciones: {calificacion.archivo}</p> : null}
+                            {calificacion.archivo && calificacion.procesado === 1 ? <p>Calificaciones procesadas</p> : <p>Calificaciones no procesadas</p>}
+                            {calificacion.archivo && calificacion.procesado !== 1 ? <p><button className="login" onClick={() => (procesarCalificacion(calificacion.id))}>Procesar calificaciones</button></p> : null}
+                            {calificacion.archivo ? <p><button className="login" onClick={() => (descargarArchivo(calificacion.id, calificacion.archivo))}>Descargar calificaciones</button></p>: null}
+                            {calificacion.archivo && calificacion.procesado === 1 ? <p><button className="login"><Link to={`graficas/${calificacion.id}`} style={{color:'black', margin:0}}>Ver gráficas</Link></button></p> : null}
                             {
                                 tipoUsuario === "3" ? (
                                     <div className="opciones">
-                                        <Link to={`editar/${baja.id}`}><img src={`${endpointLocal}img/edit.png`} alt="Icono de editar" 
+                                        <Link to={`editar/${calificacion.id}`}><img src={`${endpointLocal}img/edit.png`} alt="Icono de editar" 
                                             data-tooltip-id="tooltip"
-                                            data-tooltip-content="Editar baja"
+                                            data-tooltip-content="Editar calificacion"
                                             data-tooltip-place="top"
                                         /></Link>
-                                        <button type="button" className="deleteButton" onClick={()=>(handleDelete(baja.id))}
+                                        <button type="button" className="deleteButton" onClick={()=>(handleDelete(calificacion.id))}
                                             data-tooltip-id="tooltip"
-                                            data-tooltip-content="Eliminar baja"
+                                            data-tooltip-content="Eliminar calificacion"
                                             data-tooltip-place="top"
                                         ><img src={`${endpointLocal}img/close.webp`} alt="Eliminar"/></button>
                                     </div>
@@ -155,4 +156,4 @@ function Bajas() {
     </>);
 }
 
-export default Bajas;
+export default Calificaciones;

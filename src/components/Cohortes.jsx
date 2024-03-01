@@ -149,12 +149,7 @@ function Cohortes() {
                             <h1>{cohorte.plan}</h1>
                             <p>{cohorte.anio}</p>
                             <p>{cohortesNames[cohorte.periodo]}</p>
-                            {cohorte.archivo ? <p>Archivo con las calificaciones: {cohorte.archivo}</p> : null}
-                            {cohorte.archivo && cohorte.procesado === 1 ? <p>Calificaciones procesadas</p> : <p>Calificaciones no procesadas</p>}
-                            {cohorte.archivo && cohorte.procesado !== 1 ? <p><button className="login" onClick={() => (procesarCalificacion(cohorte.id))}>Procesar calificaciones</button></p> : null}
-                            {cohorte.archivo ? <p><button className="login" onClick={() => (descargarArchivo(cohorte.archivo))}>Descargar calificaciones</button></p>: null}
-                            {cohorte.archivo ? <p><button className="login" onClick={() => (handleDeleteCalificaciones(cohorte.id))}>Eliminar calificaciones</button></p>: null}
-                            {cohorte.archivo && cohorte.procesado === 1 ? <p><button className="login"><Link to={`graficas/${cohorte.id}`} style={{color:'black', margin:0}}>Ver gráficas</Link></button></p> : null}
+                            <p><button className="login"><Link to={`graficas/${cohorte.id}`}>Ver gráficas</Link></button></p>
                             {
                                 tipoUsuario === "3" ? (
                                     <div className="opciones">
