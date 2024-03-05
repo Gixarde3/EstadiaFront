@@ -10,6 +10,9 @@ nav{
 nav a{
     color: black;
 }
+nav a:hover{
+    text-shadow: 0px 0px 15px rgba(0,0,0,1);
+}
 #a-perfil{
     height: 60px;
     width: 60px;
@@ -32,4 +35,47 @@ nav a{
     margin-right: 1rem;
     margin-bottom: 0 !important;
     margin-top: 0 !important;
+}
+#button-down{
+    display: none;
+    padding: 0.2rem;
+    max-width: 64px;
+    background-color:rgba(0,0,0,0);
+}
+#button-down img{
+    max-width: 100%;
+    transition: transform 0.3s ease-in-out;
+}
+#button-down img.open{
+    transform: rotate(180deg);
+}
+.pages{
+    transition: max-height 0.5s ease-in-out;
+}
+@media (max-width: 768px){
+    nav{
+        flex-direction: column-reverse;
+        align-items: center;
+    }
+    .perfil{
+        flex-direction: column;
+        align-items: center;
+    }
+    .perfil h2{
+        margin-right: 0;
+        margin-bottom: 0.5rem !important;
+    }
+    #button-down{
+        display: flex;
+    }
+    .pages.open{
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        max-height: fit-content;
+    }
+    .pages{
+        max-height: 0;
+        overflow: hidden;
+    }
 }

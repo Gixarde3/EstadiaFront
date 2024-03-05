@@ -8,10 +8,12 @@ import './css/nav.css'
 function Nav() {
     const endpoint = config.endpoint;
     const endpointImage = config.endpointImage;
+    const endpointLocal = config.endpointLocal;
     const [user, setUser] = useState(null);
     const token = Cookies.get('token');
     const [alert, setAlert] = useState(null);
     const [alertOpen, setAlertOpen] = useState(false);
+    const [optionsOpened, setOptionsOpened] = useState(false);
     const openAlert = (title, message, kind, redirectRoute, asking, onAccept) => {
         setAlert({ title: title, message: message, kind: kind, redirectRoute: redirectRoute, asking: asking, onAccept: onAccept});
         setAlertOpen(true);
@@ -38,14 +40,17 @@ function Nav() {
     return (
         <>
             <nav>
-                <div className="pages">
-                    <Link to="/dashboard/cohortes">Cohortes</Link>
+                
+                <div className={`pages ${optionsOpened ? 'open' : ''}`}>
                     <Link to="/dashboard/usuarios">Usuarios</Link>
+                    <Link to="/dashboard/cohortes">Cohortes</Link>
                     <Link to="/dashboard/calificaciones">Calificaciones cuatrimestrales</Link>
                     <Link to="/dashboard/grupos">Grupos</Link>
                     <Link to="/dashboard/bajas">Bajas</Link>
+                    <Link to="/dashboard/admisiones">Admisiones</Link>
                     <Link to="/dashboard/BD">Base de datos</Link>
                 </div>
+                <button id="button-down" onClick={()=>setOptionsOpened(!optionsOpened)}><img src={`${endpointLocal}img/flecha_abajo.png`} className={`${optionsOpened ? 'open' : ''}`}/></button>
                 <div className="perfil">
                     <h2>{user ? user.nombre : ""}</h2>
                     <Link to="/perfil" id="a-perfil">

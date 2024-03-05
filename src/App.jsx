@@ -15,6 +15,9 @@ import GestionGrupos from './components/GestionGrupos';
 import EditarGrupos from './components/EditarGrupos';
 import GestionBD from './components/GestionBD';
 import GraficasCalificaciones from './components/GraficasCalificaciones';
+import GestionAdmisiones from './components/GestionAdmisiones';
+import EditarCalificaciones from './components/EditarCalificaciones';
+import EditarAdmisiones from './components/EditarAdmisiones';
 /**
  * 
  * Rutas de la aplicación, cada página se encuentra organizada por sus posibles rutas para mantener un orden
@@ -46,6 +49,7 @@ function App() {
 
             <Route path="calificaciones">
               <Route index element={<DashboardLayout Page={GestionCalificaciones}/>}/>
+              <Route path="editar/:id" element={<DashboardLayout Page={EditarCalificaciones}/>}/>
               <Route path="graficas/:id" element={<DashboardLayout Page={GraficasCalificaciones}/>}/>
             </Route>
             <Route path="bajas">
@@ -54,6 +58,11 @@ function App() {
             <Route path="grupos">
               <Route index element={<DashboardLayout Page={GestionGrupos}/>}/>
               <Route path="editar/:id" element={<DashboardLayout Page={EditarGrupos}/>}/>
+            </Route>
+            <Route path="admisiones">
+              <Route index element={<DashboardLayout Page={GestionAdmisiones}/>}/>
+              <Route path="editar/:id"  element={<DashboardLayout Page={EditarAdmisiones}/>}/>
+              <Route path="graficas/:id" element={<DashboardLayout Page={GraficasCalificaciones}/>}/>
             </Route>
             <Route path="BD">
               <Route index element={<DashboardLayout Page={GestionBD}/>}/>

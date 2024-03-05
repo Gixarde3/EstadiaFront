@@ -94,6 +94,7 @@ a{
     min-height: 100vh;
 }
 .db-buttons{
+    display: flex;
     flex-direction: row;
     justify-content: space-between;
 }

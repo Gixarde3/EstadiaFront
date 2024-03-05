@@ -101,3 +101,19 @@ input[type="file"]{
     max-height: 100vh;
     overflow-y: scroll;
 }
+.buttonsExport{
+    display: flex;
+    justify-content: space-around;
+    flex-direction: row;
+    max-width: 960px;
+}
+
+@media (max-width: 768px){
+    .buttonsExport{
+        flex-direction: column;
+        width: 90%;
+    }
+    .buttonsExport button{
+        margin-bottom: 1rem;
+    }
+}

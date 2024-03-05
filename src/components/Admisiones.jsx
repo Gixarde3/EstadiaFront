@@ -5,7 +5,7 @@ import axios from "axios";
 import ReloadButton from "./ReloadButton";
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
-function Cohortes() {
+function Admisiones() {
     const tipoUsuario = Cookies.get("tipoUsuario");
     const token = Cookies.get("token");
     const endpoint = config.endpoint;
@@ -13,8 +13,8 @@ function Cohortes() {
     const endpointLocal = config.endpointLocal;
     const [alert, setAlert] = useState(null);
     const [alertOpen, setAlertOpen] = useState(false);
-    const [cohortes, setCohortes] = useState([]);
-    const cohortesNames = {
+    const [admisiones, setAdmisiones] = useState([]);
+    const periodos = {
         "P": "Primavera",
         "O": "Otoño",
         "I": "Invierno"
@@ -28,20 +28,20 @@ function Cohortes() {
         setAlertOpen(false);
     }
     useEffect(() => {
-        const getCohortes = async() => {
+        const getAdmisiones = async() => {
             try{
-                const response = await axios.get(`${endpoint}/cohortes`);
+                const response = await axios.get(`${endpoint}/admisiones`);
                 if(response.data.success){
-                    setCohortes(response.data.cohortes);
+                    setAdmisiones(response.data.admisiones);
                 }else{
-                    openAlert("Error al obtener los cohortes", "No se han podido obtener los cohortes, intenta más tarde.", "error", null);
+                    openAlert("Error al obtener las admisiones", "No se han podido obtener las admisiones, intenta más tarde.", "error", null);
                 }
             }catch(error){
                 openAlert("Error de conexión", `La petición ha fallado por ${error}`, "error", null);
                 console.log(error);
             }
         }
-        getCohortes();
+        getAdmisiones();
     }, [tipoUsuario, token, endpoint]);
     const getUserById = async(id) => {
         try{
@@ -55,13 +55,13 @@ function Cohortes() {
             return null;
         }
     }
-    const getCohortes = async() => {
+    const getAdmisiones = async() => {
         try{
-            const response = await axios.get(`${endpoint}/cohortes`);
+            const response = await axios.get(`${endpoint}/admisiones`);
             if(response.data.success){
-                setCohortes(response.data.cohortes);
+                setAdmisiones(response.data.admisiones);
             }else{
-                openAlert("Error al obtener los cohortes", "No se han podido obtener los cohortes, intenta más tarde.", "error", null);
+                openAlert("Error al obtener las admisiones", "No se han podido obtener las admisiones, intenta más tarde.", "error", null);
             }
         }catch(error){
             openAlert("Error de conexión", `La petición ha fallado por ${error}`, "error", null);
@@ -69,47 +69,31 @@ function Cohortes() {
     }
     const handleDelete = async(id) => {
         openAlert("¿Seguro de eliminar?", "Esta acción no se puede deshacer.", "question", null, true, async () => {
-            openAlert("Eliminando cohorte", "Espere un momento por favor", "loading");
+            openAlert("Eliminando admision", "Espere un momento por favor", "loading");
             const data = {
                 id: id,
                 token: token
             };
             try{
-                const response = await axios.post(`${endpoint}/cohorte/delete/${id}`, data);
+                const response = await axios.post(`${endpoint}/admision/delete/${id}`, data);
                 if(response.data.success === true){
                     closeAlert();
-                    getCohortes();
+                    getAdmisiones();
                 }else{
-                    openAlert("Error al eliminar el cohorte", "No se ha podido eliminar el cohorte, intenta más tarde.", "error", null);
+                    openAlert("Error al eliminar la admision", "No se ha podido eliminar la admision, intenta más tarde.", "error", null);
                 }
             }catch(error){
                 openAlert("Error de conexión", `La petición ha fallado por ${error}`, "error", null);
+                console.log(error);
             }
         });
     }
-    const procesarCalificacion = async(id) => {
-        const token = Cookies.get("token");
-        openAlert("Procesando calificacion", "Espere un momento por favor", "loading");
-        try{
-            const response = await axios.post(`${endpoint}/calificacion/procesar/${id}`, {token: token});
-            if(response.data.success){
-                openAlert("Calificacion procesada", "La calificacion se procesó correctamente", "success", null);
-                getCohortes();
-            }else{
-                openAlert("Error al procesar la calificacion", "Ocurrió un error inesperado al procesar la calificacion", "error", null);
-            }
-        }catch(error){
-            console.log(error);
-            openAlert("Error de conexión", "Ocurrió un error de conexión",  "error", null);
-        }
-    }
-    const descargarArchivo = (file) => {
+    const descargarArchivo = (id, file) => {
         try{
             // Crea un enlace temporal para descargar el archivo
             const enlace = document.createElement('a');
-            enlace.href = `${config.endpoint}/calificacion/download/${file}`;
+            enlace.href = `${config.endpoint}/admision/download/${id}`;
             enlace.download = file; // Cambia el nombre de descarga si es necesario
-        
             // Simula un clic en el enlace para iniciar la descarga
             enlace.style.display = 'none';
             document.body.appendChild(enlace);
@@ -122,44 +106,47 @@ function Cohortes() {
             openAlert('Error inesperado con la descarga', `Error de descarga: ${error}`, 'error', null);
         }
     };
-    const handleDeleteCalificaciones = async(id) => {
-        const token = Cookies.get("token");
-        openAlert("Eliminando calificaciones", "Espere un momento por favor", "loading");
+
+    const procesarAdmisiones = async(id) => {
+        openAlert("Procesando admisiones", "Espere un momento por favor", "loading");
         try{
-            const response = await axios.post(`${endpoint}/calificacion/delete/${id}`, {token: token});
+            const response = await axios.post(`${endpoint}/admision/procesar/${id}`, {
+                token: token
+            });
             if(response.data.success){
-                openAlert("Calificaciones eliminadas", "Las calificaciones se eliminaron correctamente", "success", null);
-                getCohortes();
+                closeAlert();
+                getAdmisiones();
             }else{
-                openAlert("Error al eliminar las calificaciones", "Ocurrió un error inesperado al eliminar las calificaciones", "error", null);
+                openAlert("Error al procesar las admisiones", "No se han podido procesar las admisiones, intenta más tarde.", "error", null);
             }
         }catch(error){
-            openAlert("Error de conexión", "Ocurrió un error de conexión",  "error", null);
-            console.log(error);
+            openAlert("Error de conexión", `La petición ha fallado por ${error}`, "error", null);
         }
     }
+
     return (<>
-            <h1>Cohortes</h1>
-            <section id="cohortes" className="results" style={{position: 'relative', paddingTop:'calc(50px + 1rem)'}}>
-                <ReloadButton reloadFunction={getCohortes}/>
+            <h1>Admisiones</h1>
+            <section id="admisiones" className="results" style={{position: 'relative', paddingTop:'calc(50px + 1rem)'}}>
+                <ReloadButton reloadFunction={getAdmisiones}/>
             {
-                cohortes.map((cohorte) => (
-                    <div className="result" key={cohorte.id}>
+                admisiones.map((admision) => (
+                    <div className="result" key={admision.id}>
                         <div className="info">
-                            <h1>{cohorte.plan}</h1>
-                            <p>{cohorte.anio}</p>
-                            <p>{cohortesNames[cohorte.periodo]}</p>    
-                            <p><button className="login"><Link to={`graficas/${cohorte.id}`} style={{color:'black', margin:0}}>Ver gráficas</Link></button></p>                        {
+                            <h1>{periodos[admision.periodo] + " " + admision.anio}</h1>
+                            {admision.archivo && admision.procesado === 1 ? <p><button className="login"><Link to={`graficas/${admision.id}`} style={{color:'black', margin:0}}>Ver gráficas</Link></button></p> : null}
+                            {admision.archivo && admision.procesado !== 1 ? <p><button className="login" onClick={() => procesarAdmisiones(admision.id)}>Procesar admisiones</button></p> : null}
+                            {admision.archivo ? <p><button className="login" onClick={() => (descargarArchivo(admision.id, admision.archivo))}>Descargar admisiones</button></p>: null}
+                            {
                                 tipoUsuario === "3" ? (
                                     <div className="opciones">
-                                        <Link to={`editar/${cohorte.id}`}><img src={`${endpointLocal}img/edit.png`} alt="Icono de editar" 
+                                        <Link to={`editar/${admision.id}`}><img src={`${endpointLocal}img/edit.png`} alt="Icono de editar" 
                                             data-tooltip-id="tooltip"
-                                            data-tooltip-content="Editar cohorte"
+                                            data-tooltip-content="Editar admision"
                                             data-tooltip-place="top"
                                         /></Link>
-                                        <button type="button" className="deleteButton" onClick={()=>(handleDelete(cohorte.id))}
+                                        <button type="button" className="deleteButton" onClick={()=>(handleDelete(admision.id))}
                                             data-tooltip-id="tooltip"
-                                            data-tooltip-content="Eliminar cohorte"
+                                            data-tooltip-content="Eliminar admision"
                                             data-tooltip-place="top"
                                         ><img src={`${endpointLocal}img/close.webp`} alt="Eliminar"/></button>
                                     </div>
@@ -183,4 +170,4 @@ function Cohortes() {
     </>);
 }
 
-export default Cohortes;
+export default Admisiones;

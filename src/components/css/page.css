@@ -4,6 +4,7 @@
 } 
 body{
     background-color: var(--fondo);
+    overflow-x: hidden;
 }
 main{
     width: 100vw;
