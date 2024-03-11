@@ -27,7 +27,7 @@ function Recuperacion() {
             const response = await axios.post(`${endpoint}/sendMail`, data);
             if(response.data.success === true){
                 closeAlert();
-                openAlert("Email enviado", "Se ha enviado un email a tu correo electrónico para recuperar tu contraseña.", "success", "/");
+                openAlert("Email enviado", "Se ha enviado un email a tu correo electrónico para recuperar tu contraseña.", "success", "/codigo/" + email);
             }else{
                 openAlert("Error al enviar email", "No se ha podido enviar el email, intenta más tarde.", "error", null);
             }

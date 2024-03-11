@@ -57,21 +57,23 @@ function Bajas() {
         }
     }
     const handleDelete = async(id) => {
-        openAlert("Eliminando baja", "Espere un momento por favor", "loading");
-        try{
-            const response = await axios.post(`${endpoint}/baja/delete/${id}`,{
-                token: token
-            });
-            if(response.data.success){
-                openAlert("Baja eliminada", "La baja ha sido eliminada", "success", null);
-                getBajas();
-            }else{
-                openAlert("Error al eliminar la baja", "No se ha podido eliminar la baja, intenta más tarde.", "error", null);
+        openAlert("¿Seguro de eliminar?", "Esta acción no se puede deshacer.", "question", null, true, async () => {
+            openAlert("Eliminando baja", "Espere un momento por favor", "loading");
+            try{
+                const response = await axios.post(`${endpoint}/baja/delete/${id}`,{
+                    token: token
+                });
+                if(response.data.success){
+                    openAlert("Baja eliminada", "La baja ha sido eliminada", "success", null);
+                    getBajas();
+                }else{
+                    openAlert("Error al eliminar la baja", "No se ha podido eliminar la baja, intenta más tarde.", "error", null);
+                }
+            }catch(error){
+                openAlert("Error de conexión", `La petición ha fallado por ${error}`, "error", null);
+                console.log(error);
             }
-        }catch(error){
-            openAlert("Error de conexión", `La petición ha fallado por ${error}`, "error", null);
-            console.log(error);
-        }
+        });
     }
     const procesarCalificacion = async(id) => {
         openAlert("Procesando bajas", "Espere un momento por favor", "loading");
@@ -150,6 +152,7 @@ function Bajas() {
             kind={alert ? alert.kind : ""} 
             closeAlert={closeAlert} 
             redirectRoute={alert ? alert.redirectRoute : ""}
+            asking={alert ? alert.asking : false}
             onAccept={alert ? alert.onAccept : null}
         />
     </>);

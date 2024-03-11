@@ -57,21 +57,23 @@ function Calificaciones() {
         }
     }
     const handleDelete = async(id) => {
-        openAlert("Eliminando calificacion", "Espere un momento por favor", "loading");
-        try{
-            const response = await axios.post(`${endpoint}/calificacion/delete/${id}`,{
-                token: token
-            });
-            if(response.data.success){
-                openAlert("Baja eliminada", "La calificacion ha sido eliminada", "success", null);
-                getCalificaciones();
-            }else{
-                openAlert("Error al eliminar la calificacion", "No se ha podido eliminar la calificacion, intenta más tarde.", "error", null);
+        openAlert("¿Seguro de eliminar?", "Esta acción no se puede deshacer.", "question", null, true, async () => {
+            openAlert("Eliminando calificacion", "Espere un momento por favor", "loading");
+            try{
+                const response = await axios.post(`${endpoint}/calificacion/delete/${id}`,{
+                    token: token
+                });
+                if(response.data.success){
+                    openAlert("Baja eliminada", "La calificacion ha sido eliminada", "success", null);
+                    getCalificaciones();
+                }else{
+                    openAlert("Error al eliminar la calificacion", "No se ha podido eliminar la calificacion, intenta más tarde.", "error", null);
+                }
+            }catch(error){
+                openAlert("Error de conexión", `La petición ha fallado por ${error}`, "error", null);
+                console.log(error);
             }
-        }catch(error){
-            openAlert("Error de conexión", `La petición ha fallado por ${error}`, "error", null);
-            console.log(error);
-        }
+        });
     }
     const procesarCalificacion = async(id) => {
         openAlert("Procesando calificaciones", "Espere un momento por favor", "loading");
@@ -151,6 +153,7 @@ function Calificaciones() {
             kind={alert ? alert.kind : ""} 
             closeAlert={closeAlert} 
             redirectRoute={alert ? alert.redirectRoute : ""}
+            asking={alert ? alert.asking : false}
             onAccept={alert ? alert.onAccept : null}
         />
     </>);

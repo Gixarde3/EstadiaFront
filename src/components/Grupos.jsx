@@ -63,22 +63,6 @@ function Grupos() {
             }
         });
     }
-    const handleDeleteGrupos = async(id) => {
-        const token = Cookies.get("token");
-        openAlert("Eliminando grupos", "Espere un momento por favor", "loading");
-        try{
-            const response = await axios.post(`${endpoint}/calificacion/delete/${id}`, {token: token});
-            if(response.data.success){
-                openAlert("Grupos eliminadas", "Las grupos se eliminaron correctamente", "success", null);
-                getGrupos();
-            }else{
-                openAlert("Error al eliminar las grupos", "Ocurrió un error inesperado al eliminar las grupos", "error", null);
-            }
-        }catch(error){
-            openAlert("Error de conexión", "Ocurrió un error de conexión",  "error", null);
-            console.log(error);
-        }
-    }
     return (<>
             <h1>Grupos</h1>
             <section id="grupos" className="results" style={{position: 'relative', paddingTop:'calc(50px + 1rem)'}}>

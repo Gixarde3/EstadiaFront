@@ -296,7 +296,7 @@ function GraficasCohortes() {
             pdf.addImage(imgData, 'PNG', 10, 10, 190, 190);
             autoTable(pdf, {
                 head: [['Periodo', 'Cantidad de bajas']],
-                body: periodos.map((periodo) => [periodo.periodo, periodo.bajas]),
+                body: periodos.map((periodo) => [periodo.periodo, periodo.total]),
                 margin: { top: 205 },
             });
             filtroPdf = "periodos";

@@ -22,7 +22,7 @@ function Usuarios() {
         setAlertOpen(false);
     }
     const [usuarios, setUsuarios] = useState([]);
-    const tiposUsuario = ["", "Director", "Profesor/Coordinador", "Administrador"];
+    const tiposUsuario = ["Usuario sin acceso", "Director", "Profesor/Coordinador", "Administrador"];
     useEffect(() => {
         const getUsuarios = async() => {
             try{
@@ -71,9 +71,59 @@ function Usuarios() {
                     openAlert("Error al eliminar al usuario", "No se ha podido eliminar al usuario, no cuentas con los permisos necesarios.", "error", null);
                 }
                 openAlert("Error de conexión", `La petición ha fallado por ${error}`, "error", null);
+                console.log(error);
             }
         });
         
+    }
+    const handleDeactivate = async(id, activo) => {
+        if(activo){
+            openAlert("¿Seguro de desactivar a este usuario?", "Esto le quitará el acceso total al usuario.", "question", null, true, async () => {
+                openAlert("Desactivando usuario", "Espere un momento por favor", "loading");
+                const data = {
+                    id: id,
+                    token: token
+                };
+                try{
+                    const response = await axios.post(`${endpoint}/usuario/desactivar/${id}`, data);
+                    if(response.data.success === true){
+                        closeAlert();
+                        openAlert("Usuario desactivado", "Se ha desactivado el usuario correctamente.", "success");
+                        getUsuarios();
+                    }else{
+                        openAlert("Error al desactivar al usuario", "No se ha podido desactivar al usuario, intenta más tarde.", "error", null);
+                    }
+                }catch(error){
+                    if(error.response !== undefined && error.response.status === 401){
+                        openAlert("Error al desactivar al usuario", "No se ha podido desactivar al usuario, no cuentas con los permisos necesarios.", "error", null);
+                    }
+                    openAlert("Error de conexión", `La petición ha fallado por ${error}`, "error", null);
+                }
+            });
+        }else{
+            openAlert("¿Seguro de reactivor a este usuario?", "Esto le regresará el acceso al usuario.", "question", null, true, async () => {
+                openAlert("Reactivando usuario", "Espere un momento por favor", "loading");
+                const data = {
+                    id: id,
+                    token: token
+                };
+                try{
+                    const response = await axios.post(`${endpoint}/usuario/activar/${id}`, data);
+                    if(response.data.success === true){
+                        closeAlert();
+                        openAlert("Usuario reactivado", "Se ha reactivado el usuario correctamente.", "success");
+                        getUsuarios();
+                    }else{
+                        openAlert("Error reactivar al usuario", "No se ha podido reactivar al usuario, intenta más tarde.", "error", null);
+                    }
+                }catch(error){
+                    if(error.response !== undefined && error.response.status === 401){
+                        openAlert("Error reactivar al usuario", "No se ha podireactivar al usuario, no cuentas con los permisos necesarios.", "error", null);
+                    }
+                    openAlert("Error de conexión", `La petición ha fallado por ${error}`, "error", null);
+                }
+            });
+        }
     }
     return (
         <>
@@ -95,7 +145,8 @@ function Usuarios() {
                             {
                                 tipoUsuario === "3" ? (
                                     <div className="opciones">
-                                        <Link to={`editar/${usuario.id}`}><img src={`${endpointLocal}img/edit.png`} alt="Icono de editar" 
+                                        <Link to={`editar/${usuario.id}`}>
+                                            <img src={`${endpointLocal}img/edit.png`} alt="Icono de editar" 
                                             data-tooltip-id="tooltip"
                                             data-tooltip-content="Editar usuario"
                                             data-tooltip-place="top"
@@ -105,6 +156,13 @@ function Usuarios() {
                                             data-tooltip-content="Eliminar usuario"
                                             data-tooltip-place="top"
                                         ><img src={`${endpointLocal}img/close.webp`} alt="Eliminar"/></button>
+                                        <button className={`deactivateButton` + (usuario.activo === 1 ? "" : " deactivated")} type="button" onClick={()=>(handleDeactivate(usuario.id, usuario.activo === 1))}
+                                             data-tooltip-id="tooltip"
+                                             data-tooltip-content={usuario.activo === 1 ? `Desactivar usuario`: `Reactivar usuario`}
+                                             data-tooltip-place="top"
+                                        >
+                                            <img src={`${endpointLocal}img/desactivar.png`} alt="Desactivar usuario"/>
+                                        </button>
                                     </div>
                                 ) : (<> </>)
                             }

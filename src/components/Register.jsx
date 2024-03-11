@@ -4,7 +4,7 @@ import Cookies from "js-cookie";
 import Alert from "./Alert";
 import "./css/dashboard.css";
 import axios from "axios";
-function Perfiles() {
+function Register() {
     const endpointLocal = config.endpointLocal;
     const [showPassword, setShowPassword] = useState(false);
     const [showPasswordConfirm, setShowPasswordConfirm] = useState(false);
@@ -17,7 +17,7 @@ function Perfiles() {
     const [passwordConfirm, setPasswordConfirm] = useState("");
     const [image, setImage] = useState(null);
     const [imageFile, setImageFile] = useState(null); 
-    const [tipoUsuario, setTipoUsuario] = useState(0); //0:Usuario sin acceso 1: Director, 2: Profesor/Coordinador, 3: Administrador
+    const [tipoUsuario, setTipoUsuario] = useState(0); // 1: Director, 2: Profesor/Coordinador, 3: Administrador
     const [alert, setAlert] = useState(null);
     const [alertOpen, setAlertOpen] = useState(false);
     const openAlert = (title, message, kind, redirectRoute, asking, onAccept) => {
@@ -56,7 +56,7 @@ function Perfiles() {
         formData.append("email", email);
         formData.append("password", password);
         formData.append("foto", imageFile);
-        formData.append("tipoUsuario", tipoUsuario);
+        formData.append("tipoUsuario", 0);
         formData.append("token", cookie);
         try{
             const response = await axios.post(`${endpoint}/register`, formData, {
@@ -66,7 +66,7 @@ function Perfiles() {
             });
             if(response.data.success === true){
                 closeAlert();
-                openAlert("Usuario registrado", "Se ha registrado el usuario correctamente.", "success");
+                openAlert("Usuario registrado", "Se ha registrado el usuario correctamente, espera a que un administrador autorice tu acceso", "success");
             }else{
                 console.log(cookie);
                 openAlert("Error al registrar al usuario", "No se ha podido registrar al usuario, intenta más tarde." + response.data.message, "error", null);
@@ -80,7 +80,8 @@ function Perfiles() {
 
     }
     return (
-        <>
+        <main className="formulario-main">
+            <img src="/img/logo.png" alt="Logo Upemor" id="logo_upemor" />
             <h2>Registrar usuario</h2>
             <form className="dashboardForm" onSubmit={handleSubmit}>
                 <label htmlFor="">Ingresa su foto de perfil</label>
@@ -131,16 +132,7 @@ function Perfiles() {
                     <input type={`${showPasswordConfirm ? "text" : "password"}`} name="password" id="passwordVerification" placeholder="Reingresa tu contraseña" onChange={(event)=>setPasswordConfirm(event.target.value)} required/>
                     <button type="button" onClick={() => (setShowPasswordConfirm(!showPasswordConfirm))}><img src={`/img/${showPasswordConfirm ? "ver.png" : "no_ver.png"}`} alt="Icono para cambiar visibilidad" /></button>
                 </div>
-                <label htmlFor="tipoUsuario">Selecciona el tipo de usuario</label>
-                <select name="tipoUsuario" id="tipoUsuario" className="inputDashboard"
-                    onChange={(event)=>setTipoUsuario(event.target.value)}required
-                >
-                    <option value="0">Usuario sin acceso</option>
-                    <option value="3">Administrador</option>
-                    <option value="1">Director</option>
-                    <option value="2">Profesor/Coordinador</option>
-                </select>
-                <button className="login">Registrar usuario</button>
+                <button className="login">Registrarse</button>
             </form>
             <Alert 
                 isOpen={alertOpen}
@@ -152,7 +144,7 @@ function Perfiles() {
                 asking={alert ? alert.asking : false}
                 onAccept={alert ? alert.onAccept : null}
             />
-        </>
+        </main>
     )
 }
-export default Perfiles;
+export default Register;
