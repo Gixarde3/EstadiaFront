@@ -22,6 +22,7 @@ import GraficasBajas from './components/GraficasBajas';
 import Register from './components/Register';
 import EditarBajas from './components/EditarBajas';
 import Codigo from './components/Codigo';
+import GraficasAdmisiones from './components/GraficasAdmisiones';
 /**
  * 
  * Rutas de la aplicación, cada página se encuentra organizada por sus posibles rutas para mantener un orden
@@ -76,7 +77,9 @@ function App() {
             <Route path="bajasGraficas">
               <Route index element={<DashboardLayout Page={GraficasBajas}/>}/>
             </Route>
-            
+            <Route path="admisionesGraficas">
+              <Route index element={<DashboardLayout Page={GraficasAdmisiones}/>}/>
+            </Route>
           </Route>
         </Route>
       </Routes>

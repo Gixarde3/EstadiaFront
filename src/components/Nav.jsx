@@ -50,6 +50,7 @@ function Nav() {
                     <Link to="/dashboard/admisiones">Admisiones</Link>
                     <Link to="/dashboard/BD">Base de datos</Link>
                     <Link to="/dashboard/bajasGraficas">Graficas de las bajas</Link>
+                    <Link to="/dashboard/admisionesGraficas">Graficas de las admisiones</Link>
                 </div>
                 <button id="button-down" onClick={()=>setOptionsOpened(!optionsOpened)}><img src={`${endpointLocal}img/flecha_abajo.png`} className={`${optionsOpened ? 'open' : ''}`}/></button>
                 <div className="perfil">

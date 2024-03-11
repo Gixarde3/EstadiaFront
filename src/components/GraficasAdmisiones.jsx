@@ -7,14 +7,16 @@ import React, { useRef } from 'react';
 import {
     Chart as ChartJS,
     CategoryScale,
-    LinearScale,
+    LineElement,
     BarElement,
+    LinearScale,
+    PointElement,
     Title,
     Tooltip,
     Legend,
     ArcElement
 } from 'chart.js';
-import { Bar, Pie } from 'react-chartjs-2';
+import { Line, Bar, Pie } from 'react-chartjs-2';
 import jsPDF from 'jspdf';
 import autoTable from 'jspdf-autotable';
 import Filter from './Filter';
@@ -22,23 +24,42 @@ function GraficasAdmisiones() {
     ChartJS.register(
         CategoryScale,
         LinearScale,
+        PointElement,
+        LineElement,
         BarElement,
         ArcElement, 
         Title,
         Tooltip,
         Legend
     );
-    const reprobadosRef = useRef(null);
-    const [reprobados, setReprobados] = useState([]);
+    const admisionesRef = useRef(null);
+    const [admisiones, setAdmisiones] = useState([]);
     const endpoint = config.endpoint;
     const [alert, setAlert] = useState(null);
     const [alertOpen, setAlertOpen] = useState(false);
-    const [dataReprobados, setDataReprobados] = useState(null);
-    const [optionsReprobados, setOptionsReprobados] = useState(null);
+    const [dataAdmisiones, setDataAdmisiones] = useState(null);
+    const [optionsAdmisiones, setOptionsAdmisiones] = useState(null);
     const [anio1, setAnio1] = useState(0);
     const [anio2, setAnio2] = useState(0);
     const [carrera, setCarrera] = useState("");
     const [filter, setFilter] = useState(0);
+    const filtrosNames = [
+        "fichas",
+        "inscritos",
+        "examenes",
+        "aprobados"
+    ]
+    const filtrosLargos = ["Fichas vendidas", "Trámites completos", "Exámenes presentados", "número de alumnos aprobados en CENEVAL"];
+    const colores = ['#CD8987',
+    '#533745',
+    '#202030',
+    '#626267',
+    '#86836D',
+    '#8F3985',
+    '#25283D',
+    '#0D1B2A',
+    '#1B263B',
+    '#415A77'];
     const openAlert = (title, message, kind, redirectRoute, asking, onAccept) => {
         setAlert({ title: title, message: message, kind: kind, redirectRoute: redirectRoute, asking: asking, onAccept: onAccept});
         setAlertOpen(true);
@@ -47,7 +68,7 @@ function GraficasAdmisiones() {
         setAlert(null);
         setAlertOpen(false);
     }
-    const getReprobados = async() => {
+    const getAdmisiones = async() => {
         try{
             if(carrera === ""){
                 openAlert("Error al obtener los datos", "Selecciona una carrera para obtener los datos", "error", null);
@@ -57,9 +78,9 @@ function GraficasAdmisiones() {
                 openAlert("Error al obtener los datos", "El año inicial debe ser menor al año final", "error", null);
                 return;
             }
-            const response = await axios.get(`${endpoint}/bajas/rango/${anio1}/${anio2}/${carrera}`);
+            const response = await axios.get(`${endpoint}/aspirantes/${filtrosNames[filter]}/${anio1}/${anio2}/${carrera}`);
             if(response.data.success){
-                setReprobados(response.data.resultados);
+                setAdmisiones(response.data.resultados);
             }else{
                 openAlert("Error al obtener los datos", "No se han podido obtener los datos por error: " + response.data.message, "error", null);
             }
@@ -69,12 +90,12 @@ function GraficasAdmisiones() {
     }
     useEffect(()=>{
         if(anio1 > 0 && anio2 > 0 && carrera !== ""){
-            getReprobados();
+            getAdmisiones();
         }
     }, [anio1, anio2, carrera, filter]);
     useEffect(()=>{
-        const graficarReprobados = async() => {
-            setOptionsReprobados(
+        const graficarAdmisiones = async() => {
+            setOptionsAdmisiones(
                 {
                     plugins: {
                         legend: {
@@ -82,91 +103,87 @@ function GraficasAdmisiones() {
                         },
                         title: {
                             display: true,
-                            text: 'Analisis de bajas en el rango de cohortes ' + anio1 + " - " + anio2 + " de la carrera " + carrera,
+                            text: 'Análisis de admisiones: ' + filtrosLargos[filter] + " en el rango de " + anio1 + " a " + anio2 + " en la carrera de " + carrera,
                         },
                     },
                 }
             );
-            setDataReprobados(
+            console.log(admisiones.map((admision, index)=>(
                 {
-                    labels: reprobados.map((reprobado)=>reprobado.cohorte),
+                    label: 'Total',
+                    data: [admision.total],
+                    backgroundColor: colores[index],
+                    borderColor: colores[index],
+                }
+            )));
+            setDataAdmisiones(
+                {
+                    labels: admisiones.map((admision)=>admision.anio),
                     datasets: [
-                        (filter === 0 || filter === 3 ) &&
                         {
-                            label: 'Baja definitiva',
-                            data: reprobados.map((reprobado)=>reprobado.definitivas),
-                            backgroundColor: ['#CD8987']
-                        },
-                        (filter === 1 || filter === 3 ) &&
-                        {
-                            label: 'Baja temporal',
-                            data: reprobados.map((reprobado)=>reprobado.temporal),
-                            backgroundColor: ['#533745']
-                        },
-                        (filter === 2 || filter === 3 ) &&
-                        {
-                            label: 'Total de bajas',
-                            data: reprobados.map((reprobado)=>reprobado.total),
-                            backgroundColor: ['#202030']
+                            label: 'Total',
+                            data: admisiones.map((admision)=>admision.total),
+                            backgroundColor: colores,
+                            borderColor: colores,
                         }
                     ]
                   }
                 );
         }
-        if(reprobados && reprobados.activos !== null && anio1 > 0 && anio2 > 0 && carrera !== ""){
-            graficarReprobados();
-           
+        if(admisiones && admisiones.activos !== null && anio1 > 0 && anio2 > 0 && carrera !== ""){
+            graficarAdmisiones();
         }
-    }, [reprobados, anio1, anio2, carrera, filter]);
+    }, [admisiones, anio1, anio2, carrera, filter]);
     const handleExport = () => { 
         const font = config.font;
-        const reprobadosCanvas = reprobadosRef ? (reprobadosRef.current ? reprobadosRef.current.canvas : null ) : null;
+        const admisionesCanvas = admisionesRef ? (admisionesRef.current ? admisionesRef.current.canvas : null ) : null;
         const pdf = new jsPDF({ filters: ["ASCIIHexEncode"] });
         pdf.addFileToVFS("RethinkSans.ttf", font);
         pdf.addFont("RethinkSans.ttf", "Rethink", "normal");
         pdf.setFont("Rethink"); // set font
         pdf.setFontSize(15);
         let filtroPdf = "";
-        if(reprobadosCanvas){
-            var canvas = reprobadosCanvas;
+        if(admisionesCanvas){
+            var canvas = admisionesCanvas;
             var imgData = canvas.toDataURL('image/png');
-            pdf.addImage(imgData, 'PNG', 10, 10, 190, 100);
+            pdf.text("Grafica de " + filtrosLargos[filter] + " \nen el rango de " + anio1 + " a " + anio2 + " en la carrera de " + carrera, 10, 10);
+            pdf.addImage(imgData, 'PNG', 10, 25, 190, 100);
             autoTable(pdf, {
-                head: [["Cohorte", "Bajas definitivas", "Bajas temporales", "Total de bajas"]],
-                body: reprobados.map((reprobado)=>[reprobado.cohorte, reprobado.definitivas, reprobado.temporal, reprobado.total]),
-                margin: { top: 110 },
+                head: [["Año", "Total"]],
+                body: admisiones.map((admision)=>[admision.anio, admision.total]),
+                margin: { top: 135 },
             });
             filtroPdf = "bajas";
         }
-        pdf.save("Graficas_bajasRango_"+anio1+"-"+anio2+"("+carrera+")"+".pdf");
+        pdf.save("Graficas_admisionesRango_"+anio1+"-"+anio2+"("+carrera+")_"+filtrosLargos[filter]+".pdf");
     }
 
     const handleExportPNG = () => {
-        if(reprobadosRef && reprobadosRef.current){
-            const canvas = reprobadosRef.current.canvas;
+        if(admisionesRef && admisionesRef.current){
+            const canvas = admisionesRef.current.canvas;
             const imgData = canvas.toDataURL('image/png');
             const link = document.createElement('a');
             link.href = imgData;
-            link.download = 'reprobados.png';
+            link.download = 'admisiones.png';
             link.click();
         }
     }
     const handleExportJPG = () => {
-        if(reprobadosRef && reprobadosRef.current){
-            const canvas = reprobadosRef.current.canvas;
+        if(admisionesRef && admisionesRef.current){
+            const canvas = admisionesRef.current.canvas;
             const imgData = canvas.toDataURL('image/jpg');
             const link = document.createElement('a');
             link.href = imgData;
-            link.download = 'reprobados.jpg';
+            link.download = 'admisiones.jpg';
             link.click();
         }
     }
     return (
     <>
-        <h1>Gráficas de bajas en general</h1>
-        <h2>Filtro de tipo de bajas</h2>
-        <Filter filters={["Bajas definitivas", "Bajas temporales", "Bajas totales", "Todas las bajas"]} setValue={(value)=>setFilter(value)}/>
-        <h2>Selecciona un rango para ver las bajas dentro de ese rango de cohortes</h2>
+        <h1>Gráficas de admisiones en general</h1>
+        <h2>Filtro el tipo de gráfica</h2>
+        <Filter filters={["Fichas vendidas", "Trámites completos", "Exámenes presentados", "número de alumnos aprobados en CENEVAL"]} setValue={(value)=>setFilter(value)}/>
+        <h2>Selecciona un rango para ver l@s {filtrosLargos[filter]} dentro de ese rango de cohortes</h2>
             <form action="" className="dashboardForm">
             <label htmlFor="anio1">Desde el: </label>
             <input type="number" maxLength={4} id="anio1" placeholder="Año inicial" className="inputDashboard" onChange={(e)=>(setAnio1(e.target.value))}/>
@@ -184,15 +201,15 @@ function GraficasAdmisiones() {
             </select>
         </form>
         {
-            dataReprobados && optionsReprobados &&
+            dataAdmisiones && optionsAdmisiones &&
             <div className="result grafica">
-                <Bar data={dataReprobados} options={optionsReprobados} ref={reprobadosRef}/>
+                <Line data={dataAdmisiones} options={optionsAdmisiones} ref={admisionesRef}/>
             </div>
         }
-        {dataReprobados && <div className="buttonsExport result">
-            {dataReprobados ? <button className='login' onClick={() => (handleExport())}>Exportar gráficas a PDF</button> : null}
-            {dataReprobados ? <button className='login' onClick={() => (handleExportPNG())}>Exportar gráficas a PNG</button> : null}
-            {dataReprobados ? <button className='login' onClick={() => (handleExportJPG())}>Exportar gráficas a JPG</button> : null}
+        {dataAdmisiones && <div className="buttonsExport result">
+            {dataAdmisiones ? <button className='login' onClick={() => (handleExport())}>Exportar gráficas a PDF</button> : null}
+            {dataAdmisiones ? <button className='login' onClick={() => (handleExportPNG())}>Exportar gráficas a PNG</button> : null}
+            {dataAdmisiones ? <button className='login' onClick={() => (handleExportJPG())}>Exportar gráficas a JPG</button> : null}
         </div>}
         <Alert 
             isOpen={alertOpen}

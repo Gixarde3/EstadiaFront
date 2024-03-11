@@ -121,6 +121,7 @@ function Admisiones() {
             }
         }catch(error){
             openAlert("Error de conexión", `La petición ha fallado por ${error}`, "error", null);
+            console.log(error);
         }
     }
 
@@ -133,7 +134,6 @@ function Admisiones() {
                     <div className="result" key={admision.id}>
                         <div className="info">
                             <h1>{periodos[admision.periodo] + " " + admision.anio}</h1>
-                            {admision.archivo && admision.procesado === 1 ? <p><button className="login"><Link to={`graficas/${admision.id}`} style={{color:'black', margin:0}}>Ver gráficas</Link></button></p> : null}
                             {admision.archivo && admision.procesado !== 1 ? <p><button className="login" onClick={() => procesarAdmisiones(admision.id)}>Procesar admisiones</button></p> : null}
                             {admision.archivo ? <p><button className="login" onClick={() => (descargarArchivo(admision.id, admision.archivo))}>Descargar admisiones</button></p>: null}
                             {
