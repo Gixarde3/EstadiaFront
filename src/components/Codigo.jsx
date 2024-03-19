@@ -62,6 +62,30 @@ function Codigo() {
             num6.current.innerHTML = code.toString().charAt(5);
         }
     }, [code]);
+    const reenviarMail = async() => {
+        const email = Cookies.get('email');
+        openAlert("Enviando email", "Espere un momento por favor", "loading");
+        const data = {
+            email: email,
+        };
+        try{
+            const response = await axios.post(`${endpoint}/sendMail`, data);
+            if(response.data.success === true){
+                closeAlert();
+                openAlert("Email enviado", "Se ha enviado un email a tu correo electrónico para recuperar tu contraseña.", "success");
+            }else{
+                openAlert("Error al enviar email", "No se ha podido enviar el email, intenta más tarde.", "error", null);
+            }
+        }
+        catch(error){
+            if(error.response !== undefined && error.response.status === 401){
+                openAlert("Error al enviar email", "No se ha podido enviar el email, no existe cuenta para ese email", "error", null);
+            }else{
+                openAlert("Error de conexión", `La petición ha fallado por ${error}`, "error", null);
+                console.log(error);
+            }
+        }
+    }
     return (
         <main className="formulario-main">
             <img src="/img/logo.png" alt="Logo Upemor" id="logo_upemor" />
@@ -89,7 +113,8 @@ function Codigo() {
                     </div>
                 </label>
                 <input type="number" name="codigo" id="codigo" maxLength="4" style={{opacity: 0}} onChange={(e)=>setCode(e.target.value)} ref={inputRef} required/>
-                <button className="login">Enviar código</button>
+                <button className="login">Cambiar contraseña</button>
+                <button type="button" className="login" onClick={()=>reenviarMail()} style={{marginTop: '1rem'}}>Reenviar código</button>
             </form>
             <Alert isOpen={alertOpen} title={alert ? alert.title : ""} message={alert ? alert.message : ""} kind={alert ? alert.kind : ""} closeAlert={closeAlert} redirectRoute={alert ? alert.redirectRoute : ""} />
         </main>

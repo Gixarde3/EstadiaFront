@@ -176,6 +176,7 @@ function EditarUsuario() {
                     onChange={(event)=>setTipoUsuario(event.target.value)}required
                     value={tipoUsuario}
                 >
+                    <option value="0">Usuario sin acceso</option>
                     <option value="3">Administrador</option>
                     <option value="1">Director</option>
                     <option value="2">Profesor/Coordinador</option>

@@ -23,6 +23,7 @@ import Register from './components/Register';
 import EditarBajas from './components/EditarBajas';
 import Codigo from './components/Codigo';
 import GraficasAdmisiones from './components/GraficasAdmisiones';
+import Notificaciones from './components/Notificaciones';
 /**
  * 
  * Rutas de la aplicación, cada página se encuentra organizada por sus posibles rutas para mantener un orden
@@ -79,6 +80,9 @@ function App() {
             </Route>
             <Route path="admisionesGraficas">
               <Route index element={<DashboardLayout Page={GraficasAdmisiones}/>}/>
+            </Route>
+            <Route path="notificaciones">
+              <Route index element={<DashboardLayout Page={Notificaciones}/>}/>
             </Route>
           </Route>
         </Route>

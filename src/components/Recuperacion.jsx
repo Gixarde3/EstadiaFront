@@ -2,6 +2,7 @@ import { useState } from "react";
 import Alert from "./Alert";
 import config from "./config.json";
 import axios from "axios";
+import Cookies from "js-cookie";
 import "./css/forms.css";
 import "./css/page.css";
 function Recuperacion() {
@@ -20,6 +21,7 @@ function Recuperacion() {
     const handleSubmit = async(event) => {
         event.preventDefault();
         openAlert("Enviando email", "Espere un momento por favor", "loading");
+        Cookies.set('email', email);  
         const data = {
             email: email,
         };

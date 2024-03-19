@@ -66,9 +66,8 @@ function Register() {
             });
             if(response.data.success === true){
                 closeAlert();
-                openAlert("Usuario registrado", "Se ha registrado el usuario correctamente, espera a que un administrador autorice tu acceso", "success");
+                openAlert("Usuario registrado", "Se ha registrado el usuario correctamente, espera a que un administrador autorice tu acceso", "success", "/");
             }else{
-                console.log(cookie);
                 openAlert("Error al registrar al usuario", "No se ha podido registrar al usuario, intenta más tarde." + response.data.message, "error", null);
             }
         }catch(error){
@@ -76,6 +75,7 @@ function Register() {
                 openAlert("Error al registrar al usuario", "No se ha podido registrar al usuario, intenta más tarde.", "error", null);
             }
             openAlert("Error de conexión", `La petición ha fallado por ${error}`, "error", null);
+            console.log(error);
         }
 
     }

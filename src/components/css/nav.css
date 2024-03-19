@@ -1,7 +1,7 @@
 nav{
     display: flex;
     flex-direction: row;
-    justify-content: space-between;
+    justify-content: flex-end;
     align-items: center;
     padding: 0.5rem;
     border-bottom: 5px solid black;
@@ -50,7 +50,26 @@ nav a:hover{
     transform: rotate(180deg);
 }
 .pages{
-    transition: max-height 0.5s ease-in-out;
+    display: none;
+}
+aside{
+    height: max-content;
+    width: 300px;
+    display: flex;
+    flex-direction: column;
+    background-color: var(--fondo-form);
+    position:absolute;
+    top: 40%;
+    left: 0;
+    border: 5px solid black;
+    border-left: 0;
+}
+aside a{
+    color: black;
+    margin-top: 0.2rem;
+}
+aside a:hover{
+    text-shadow: 0px 0px 15px rgba(0,0,0,1);
 }
 @media (max-width: 768px){
     nav{
@@ -77,5 +96,8 @@ nav a:hover{
     .pages{
         max-height: 0;
         overflow: hidden;
+    }
+    aside{
+        display: none;
     }
 }
