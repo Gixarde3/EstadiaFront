@@ -82,6 +82,8 @@ aside a:hover{
     nav{
         flex-direction: column-reverse;
         align-items: center;
+        position: relative;
+        height: fit-content;
     }
     .perfil{
         flex-direction: column;
