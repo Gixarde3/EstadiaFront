@@ -67,6 +67,15 @@ function Register() {
             if(response.data.success === true){
                 closeAlert();
                 openAlert("Usuario registrado", "Se ha registrado el usuario correctamente, espera a que un administrador autorice tu acceso", "success", "/");
+                setNoEmp(0);
+                setNombre("");
+                setApP("");
+                setApM("");
+                setEmail("");
+                setPassword("");
+                setPasswordConfirm("");
+                setImage(null);
+
             }else{
                 openAlert("Error al registrar al usuario", "No se ha podido registrar al usuario, intenta más tarde." + response.data.message, "error", null);
             }
@@ -102,23 +111,33 @@ function Register() {
                 </div>
                 <label htmlFor="noEmp">Número de empleado</label>
                 <input type="number" id="noEmp" placeholder="Ingresa el número de empleado" className="inputDashboard" 
-                    onChange={(event)=>setNoEmp(event.target.value)}required
+                    onChange={(event)=>setNoEmp(event.target.value)}
+                    value={noEmp === 0 ? "" : noEmp}
+                    required
                 />
                 <label htmlFor="nombre">Nombre</label>
                 <input type="text" id="nombre" placeholder="Ingresa el nombre del empleado" className="inputDashboard"
-                    onChange={(event)=>setNombre(event.target.value)}required
+                    onChange={(event)=>setNombre(event.target.value)}
+                    value={nombre === "" ? "" : nombre}
+                    required
                 />
                 <label htmlFor="apP">Apellido Paterno</label>
                 <input type="text" name="apP" id="apP" className="inputDashboard"placeholder="Ingresa su apellido paterno" 
-                    onChange={(event)=>setApP(event.target.value)}required
+                    onChange={(event)=>setApP(event.target.value)}
+                    value={apP === "" ? "" : apP}
+                    required
                 />
                 <label htmlFor="apM">Apellido Materno</label>
                 <input type="text" name="apM" id="apM" className="inputDashboard"placeholder="Ingresa su apellido materno" 
-                    onChange={(event)=>setApM(event.target.value)}required
+                    onChange={(event)=>setApM(event.target.value)}
+                    value={apM === "" ? "" : apM}
+                    required
                 />
                 <label htmlFor="email">Correo electrónico</label>
                 <input type="email" name="email" id="email" className="inputDashboard"placeholder="Ingresa su correo electrónico" 
-                    onChange={(event)=>setEmail(event.target.value)}required
+                    onChange={(event)=>setEmail(event.target.value)}
+                    value={email === "" ? "" : email}
+                    required
                 />
                 <label htmlFor="">Ingresa su contraseña</label>
                 <div className="inputForm">
