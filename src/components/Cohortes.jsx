@@ -88,7 +88,7 @@ function Cohortes() {
         });
     }
     return (<>
-            <h1>Cohortes</h1>
+            <h1>Gestión de cohortes</h1>
             <section id="cohortes" className="results" style={{position: 'relative', paddingTop:'calc(50px + 1rem)'}}>
                 <ReloadButton reloadFunction={getCohortes}/>
             {

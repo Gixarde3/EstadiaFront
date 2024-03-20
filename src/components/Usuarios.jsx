@@ -127,7 +127,7 @@ function Usuarios() {
     }
     return (
         <>
-            <h1>Usuarios</h1>
+            <h1>Gestión de usuarios</h1>
             <section id="usuarios" className="results" style={{position: 'relative', paddingTop:'calc(50px + 1rem)'}}>
                 <ReloadButton reloadFunction={getUsuarios}/>
             

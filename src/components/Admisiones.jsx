@@ -126,7 +126,7 @@ function Admisiones() {
     }
 
     return (<>
-            <h1>Admisiones</h1>
+            <h1>Gestión de admisiones</h1>
             <section id="admisiones" className="results" style={{position: 'relative', paddingTop:'calc(50px + 1rem)'}}>
                 <ReloadButton reloadFunction={getAdmisiones}/>
             {

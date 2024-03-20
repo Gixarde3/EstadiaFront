@@ -14,6 +14,12 @@ function Nav() {
     const [alert, setAlert] = useState(null);
     const [alertOpen, setAlertOpen] = useState(false);
     const [optionsOpened, setOptionsOpened] = useState(false);
+    const tiposUsuarios = [
+        "Usuario sin acceso",
+        "Director",
+        "Profesor/Coordinador",
+        "Administrador"
+    ];
     const openAlert = (title, message, kind, redirectRoute, asking, onAccept) => {
         setAlert({ title: title, message: message, kind: kind, redirectRoute: redirectRoute, asking: asking, onAccept: onAccept});
         setAlertOpen(true);
@@ -61,7 +67,7 @@ function Nav() {
                 </div>
                 <button id="button-down" onClick={()=>setOptionsOpened(!optionsOpened)}><img src={`${endpointLocal}img/flecha_abajo.png`} className={`${optionsOpened ? 'open' : ''}`}/></button>
                 <div className="perfil">
-                    <h2>{user ? user.nombre : ""}</h2>
+                    <h2>{user ? user.nombre : ""} ({tiposUsuarios[Cookies.get("tipoUsuario")]})</h2>
                     <button
                      id="a-perfil">
                         <img src={`${endpointImage}${user ? user.foto : ""}`} alt="Foto de perfil" id="foto-perfil" />

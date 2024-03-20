@@ -24,6 +24,7 @@ import EditarBajas from './components/EditarBajas';
 import Codigo from './components/Codigo';
 import GraficasAdmisiones from './components/GraficasAdmisiones';
 import Notificaciones from './components/Notificaciones';
+import Inicio from './components/Inicio';
 /**
  * 
  * Rutas de la aplicación, cada página se encuentra organizada por sus posibles rutas para mantener un orden
@@ -40,7 +41,7 @@ function App() {
           <Route path="codigo/:mail" element={<Codigo/>}></Route>
           <Route path="dashboard">
 
-            <Route index element={<Navigate to="/dashboard/usuarios" />} />
+            <Route index element={<DashboardLayout Page={Inicio}/>} />
             <Route path="usuarios">
               <Route index element={<DashboardLayout Page={GestionUsuarios}/>}/>
               <Route path="editar/:id" element={<DashboardLayout Page={EditarUsuario}/>}/>

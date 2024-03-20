@@ -81,7 +81,7 @@ function Perfiles() {
     }
     return (
         <>
-            <h2>Registrar usuario</h2>
+            <h2>Crear usuario</h2>
             <form className="dashboardForm" onSubmit={handleSubmit}>
                 <label htmlFor="">Ingresa su foto de perfil</label>
                 <div className="testimonial-foto" style={!image ? {

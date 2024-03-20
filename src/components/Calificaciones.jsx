@@ -111,7 +111,7 @@ function Calificaciones() {
         }
     };
     return (<>
-        <h1>Calificaciones</h1>
+        <h1>Gestión de calificaciones</h1>
             <section id="calificaciones" className="results" style={{position: 'relative', paddingTop:'calc(50px + 1rem)'}}>
                 <ReloadButton reloadFunction={getCalificaciones}/>
             {

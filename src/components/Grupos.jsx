@@ -64,7 +64,7 @@ function Grupos() {
         });
     }
     return (<>
-            <h1>Grupos</h1>
+            <h1>Gestión de grupos</h1>
             <section id="grupos" className="results" style={{position: 'relative', paddingTop:'calc(50px + 1rem)'}}>
                 <ReloadButton reloadFunction={()=>getGrupos()}/>
             <Buscar setData={(data)=>(setGru(data))}
