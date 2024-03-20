@@ -62,18 +62,14 @@ function Nav() {
                 <button id="button-down" onClick={()=>setOptionsOpened(!optionsOpened)}><img src={`${endpointLocal}img/flecha_abajo.png`} className={`${optionsOpened ? 'open' : ''}`}/></button>
                 <div className="perfil">
                     <h2>{user ? user.nombre : ""}</h2>
-                    <button style={{
-                        cursor: "pointer"
-                    }}
-                    data-tooltip-id="tooltip"
-                    data-tooltip-content="Cerrar sesión"
-                    data-tooltip-place="bottom"
-                    onClick={()=>logout()} id="a-perfil">
+                    <button
+                     id="a-perfil">
                         <img src={`${endpointImage}${user ? user.foto : ""}`} alt="Foto de perfil" id="foto-perfil" />
                     </button>
                 </div>
             </nav>
             <aside id="opciones">
+                <h2>Menú</h2>
                     <Link to="/dashboard/usuarios">Usuarios</Link>
                     <Link to="/dashboard/cohortes">Cohortes</Link>
                     <Link to="/dashboard/calificaciones">Calificaciones cuatrimestrales</Link>
@@ -84,6 +80,7 @@ function Nav() {
                     <Link to="/dashboard/bajasGraficas">Graficas de las bajas</Link>
                     <Link to="/dashboard/admisionesGraficas">Graficas de las admisiones</Link>
                     <Link to="/dashboard/notificaciones">Notificaciones</Link>
+                    <Link onClick={()=>logout()}>Cerrar sesión</Link>
             </aside>
             <Alert isOpen={alertOpen} title={alert ? alert.title : ""} message={alert ? alert.message : ""} kind={alert ? alert.kind : ""} closeAlert={closeAlert} redirectRoute={alert ? alert.redirectRoute : ""} />
             
