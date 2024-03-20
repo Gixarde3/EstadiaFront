@@ -80,7 +80,9 @@ function Nav() {
                     <Link to="/dashboard/bajasGraficas">Graficas de las bajas</Link>
                     <Link to="/dashboard/admisionesGraficas">Graficas de las admisiones</Link>
                     <Link to="/dashboard/notificaciones">Notificaciones</Link>
-                    <Link onClick={()=>logout()}>Cerrar sesión</Link>
+                    <Link onClick={()=>logout()} style={{
+                        fontWeight: "bold",
+                    }}>Cerrar sesión</Link>
             </aside>
             <Alert isOpen={alertOpen} title={alert ? alert.title : ""} message={alert ? alert.message : ""} kind={alert ? alert.kind : ""} closeAlert={closeAlert} redirectRoute={alert ? alert.redirectRoute : ""} />
             
