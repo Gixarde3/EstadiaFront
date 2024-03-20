@@ -8,7 +8,7 @@ function GestionUsuarios() {
     return (<>
         <Usuarios />
         {
-            tipoUsuario === "3" &&  <button className="login" onClick={()=>setEditar(!editar)}>Registrar usuario</button>
+            tipoUsuario === "3" &&  <button className="login" onClick={()=>setEditar(!editar)}>{editar === false ? "Registrar usuario" : "Cancelar registro"} </button>
         }
         {
             editar === true && <Perfiles/> 
