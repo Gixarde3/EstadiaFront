@@ -9,14 +9,16 @@ import React, { useRef } from 'react';
 import {
     Chart as ChartJS,
     CategoryScale,
-    LinearScale,
+    LineElement,
     BarElement,
+    LinearScale,
+    PointElement,
     Title,
     Tooltip,
     Legend,
     ArcElement
 } from 'chart.js';
-import { Bar, Pie } from 'react-chartjs-2';
+import { Bar, Pie, Line } from 'react-chartjs-2';
 import jsPDF from 'jspdf';
 import Filter from './Filter';
 import autoTable from 'jspdf-autotable';
@@ -25,6 +27,8 @@ function GraficasCohortes() {
     ChartJS.register(
         CategoryScale,
         LinearScale,
+        PointElement,
+        LineElement,
         BarElement,
         ArcElement, 
         Title,
@@ -32,9 +36,17 @@ function GraficasCohortes() {
         Legend
     );
     const {id}= useParams();
+    const historicoRef = useRef(null);
     const reprobadosRef = useRef(null);
     const materiasRef = useRef(null);
     const periodosRef = useRef(null);
+    const [totalAlumnos, setTotalAlumnos] = useState([]);
+    const [alumnos, setAlumnos] = useState(0);
+    const [fichas, setFichas] = useState(0);
+    const [examenes, setExamenes] = useState(0);
+    const [examenesAprobados, setExamenesAprobados] = useState(0);
+    const [inscritosCurso, setInscritosCursi] = useState(0);
+    const [aprobadosCurso, setAprobadosCurso] = useState(0);
     const [materias, setMaterias] = useState([]);
     const [reprobados, setReprobados] = useState([]);
     const [periodos, setPeriodos] = useState([]);
@@ -45,14 +57,17 @@ function GraficasCohortes() {
     const [dataReprobados, setDataReprobados] = useState(null);
     const [dataPeriodos, setDataPeriodos] = useState(null);
     const [dataMaterias, setDataMaterias] = useState(null);
+    const [dataHistoricos, setDataHistoricos] = useState(null);
     const [optionsReprobados, setOptionsReprobados] = useState(null);
     const [optionsPeriodos, setOptionsPeriodos] = useState(null);
     const [optionsMaterias, setOptionsMaterias] = useState(null);
+    const [optionsHistorico, setOptionsHistorico] = useState(null);
     const [filtro, setFiltro] = useState(0);
     const filtros = [
         "Reporte de bajas por cohorte",
         "Calculo de matrícula por cohorte",
-        "Materias con mayor cantidad de alumnos reprobados"
+        "Materias con mayor cantidad de alumnos reprobados",
+        "Cantidad de alumnos a través de los periodos"
     ]
     const openAlert = (title, message, kind, redirectRoute, asking, onAccept) => {
         setAlert({ title: title, message: message, kind: kind, redirectRoute: redirectRoute, asking: asking, onAccept: onAccept});
@@ -111,15 +126,91 @@ function GraficasCohortes() {
         }
     
     }
+    const getTotalAlumnos = async() => {
+        try{
+            const response = await axios.get(`${endpoint}/bajas/alumnos/${id}`);
+            if(response.data.success){
+                setAlumnos(response.data.resultados);
+            }else{
+                openAlert("Error al obtener los datos", "No se han podido obtener los datos por error: " + response.data.message, "error", null);
+            }
+        }catch(error){
+            openAlert("Error de conexión", `La petición ha fallado por ${error}`, "error", null);
+            console.log(error);
+        }
+    }
+    const getFichas = async () => {
+        try{
+            const response = await axios.get(`${endpoint}/aspirantes/fichas/${id}`);
+            if(response.data.success){
+                setFichas(response.data.resultados);
+            }else{
+                openAlert("Error al obtener los datos", "No se han podido obtener los datos por error: " + response.data.message, "error", null);
+            }
+        }catch(error){
+            openAlert("Error de conexión", `La petición ha fallado por ${error}`, "error", null);
+        }
+    }
+    const getExamenes = async () => {
+        try{
+            const response = await axios.get(`${endpoint}/aspirantes/examen/${id}`);
+            if(response.data.success){
+                setExamenes(response.data.resultados);
+            }else{
+                openAlert("Error al obtener los datos", "No se han podido obtener los datos por error: " + response.data.message, "error", null);
+            }
+        }catch(error){
+            openAlert("Error de conexión", `La petición ha fallado por ${error}`, "error", null);
+        }
+    }
+    const getExamenesAprobados = async () => {
+        try{
+            const response = await axios.get(`${endpoint}/aspirantes/examen/aprobados/${id}`);
+            if(response.data.success){
+                setExamenesAprobados(response.data.resultados);
+            }else{
+                openAlert("Error al obtener los datos", "No se han podido obtener los datos por error: " + response.data.message, "error", null);
+            }
+        }catch(error){
+            openAlert("Error de conexión", `La petición ha fallado por ${error}`, "error", null);
+        }
+    }
+    const getInscritosCurso = async () => {
+        try{
+            const response = await axios.get(`${endpoint}/aspirantes/curso/${id}`);
+            if(response.data.success){
+                setInscritosCursi(response.data.resultados);
+            }else{
+                openAlert("Error al obtener los datos", "No se han podido obtener los datos por error: " + response.data.message, "error", null);
+            }
+        }catch(error){
+            openAlert("Error de conexión", `La petición ha fallado por ${error}`, "error", null);
+        }
+    }
+    const getAprobadosCurso = async () => {
+        try{
+            const response = await axios.get(`${endpoint}/aspirantes/curso/aprobados/${id}`);
+            if(response.data.success){
+                setAprobadosCurso(response.data.resultados);
+            }else{
+                openAlert("Error al obtener los datos", "No se han podido obtener los datos por error: " + response.data.message, "error", null);
+            }
+        }catch(error){
+            openAlert("Error de conexión", `La petición ha fallado por ${error}`, "error", null);
+        }
+    }
     useEffect(()=>{
         getCohorte();
         getMaterias();
         getReprobados();
         getPeriodos();
+        getTotalAlumnos();
+        getFichas();
+        getExamenes();
+        getExamenesAprobados();
+        getInscritosCurso();
+        getAprobadosCurso();
     }, [id]);
-    useEffect(()=>{
-        console.log(cohorte);
-    }, [cohorte])
     useEffect(()=>{
         const graficarMaterias = async() => {
             setOptionsMaterias(
@@ -257,11 +348,70 @@ function GraficasCohortes() {
         }
         console.log(reprobados);
     }, [reprobados, cohorte])
+    useEffect(()=>{
+        const graficarHistorico = async() => {
+            setOptionsHistorico(
+                {
+                    plugins: {
+                        legend: {
+                            position: 'top'
+                        },
+                        title: {
+                            display: true,
+                            text: 'Historico de alumnos en el cohorte: ' + cohorte.periodo + cohorte.anio,
+                        },
+                    },
+                }
+            );
+            let activos = alumnos;
+            const activosHistorico = [fichas, examenes, examenesAprobados, inscritosCurso, aprobadosCurso, alumnos];
+            periodos.forEach((periodo)=>{
+                activos -= periodo.total;
+                activosHistorico.push(activos);
+            });
+            periodos.unshift(
+                {periodo: "Fichas vendidas", total: fichas},
+                {periodo: "Examenes presentados", total: examenes},
+                {periodo: "Examenes aprobados", total: examenesAprobados},
+                {periodo: "Inscritos en curso", total: inscritosCurso},
+                {periodo: "Aprobados en curso", total: aprobadosCurso},
+                {periodo: cohorte.periodo + cohorte.anio, total: alumnos})
+                console.log(activosHistorico);
+            setTotalAlumnos(activosHistorico);
+            setDataHistoricos(
+                {
+                    labels: periodos.map((periodo) => periodo['periodo']),
+                    datasets: [
+                      {
+                        label: 'Cantidad',
+                        data: activosHistorico,
+                        backgroundColor: [
+                            '#CD8987',
+                            '#533745',
+                            '#202030',
+                            '#626267',
+                            '#86836D',
+                            '#8F3985',
+                            '#25283D',
+                            '#0D1B2A',
+                            '#1B263B',
+                            '#415A77'
+                        ]
+                      },
+                    ]
+                  }
+                );
+        }
+        if(periodos && cohorte && alumnos && periodos.length !== 0){
+            graficarHistorico();
+        }
+    }, [periodos, cohorte, alumnos, fichas, examenes, examenesAprobados, inscritosCurso, aprobadosCurso])
     const handleExport = () => { 
         const font = config.font;
         const reprobadosCanvas = reprobadosRef ? (reprobadosRef.current ? reprobadosRef.current.canvas : null ) : null;
         const materiasCanvas = materiasRef ? (materiasRef.current ? materiasRef.current.canvas : null ) : null;
         const periodosCanvas = periodosRef ? (periodosRef.current ? periodosRef.current.canvas : null ) : null;
+        const historicoCanvas = historicoRef ? (historicoRef.current ? historicoRef.current.canvas : null ) : null;
         const pdf = new jsPDF({ filters: ["ASCIIHexEncode"] });
         pdf.addFileToVFS("RethinkSans.ttf", font);
         pdf.addFont("RethinkSans.ttf", "Rethink", "normal");
@@ -301,6 +451,25 @@ function GraficasCohortes() {
             });
             filtroPdf = "periodos";
         }
+        if(historicoCanvas){
+            var canvas = historicoCanvas;
+            var imgData = canvas.toDataURL('image/png');
+            pdf.addImage(imgData, 'PNG', 10, 10, 190, 100);
+            const data = []
+            console.log(totalAlumnos)
+            periodos.forEach((periodo, index)=>{
+                data.push({
+                    periodo: periodo.periodo,
+                    cantidad: totalAlumnos[index]
+                })
+            });
+            autoTable(pdf, {
+                head: [['Periodo', 'Cantidad de bajas']],
+                body: data.map((dat) => [dat.periodo, dat.cantidad]),
+                margin: { top: 115 },
+            });
+            filtroPdf = "historico";
+        }
         pdf.save("Graficas_cohorte_"+id+"_"+filtroPdf+".pdf");
     }
 
@@ -329,6 +498,14 @@ function GraficasCohortes() {
             link.download = 'periodos.png';
             link.click();
         }
+        if(historicoRef && historicoRef.current){
+            const canvas = historicoRef.current.canvas;
+            const imgData = canvas.toDataURL('image/png');
+            const link = document.createElement('a');
+            link.href = imgData;
+            link.download = 'historico.png';
+            link.click();
+        }
     }
     const handleExportJPG = () => {
         if(reprobadosRef && reprobadosRef.current){
@@ -355,12 +532,31 @@ function GraficasCohortes() {
             link.download = 'periodos.jpg';
             link.click();
         }
+        if(historicoRef && historicoRef.current){
+            const canvas = historicoRef.current.canvas;
+            const imgData = canvas.toDataURL('image/jpg');
+            const link = document.createElement('a');
+            link.href = imgData;
+            link.download = 'historico.jpg';
+            link.click();
+        }
     }
     return (
     <>
         <h1>Gráficas del cohorte: {cohorte ? (cohorte.periodo + cohorte.anio) : ""}</h1>
         <h2>Selecciona un filtro para ver las gráficas</h2>
         <Filter setValue={(value) => setFiltro(value)} filters={filtros}/>
+        {
+            filtro === 3 ?
+                dataHistoricos && optionsHistorico ?
+                <div className="grafica result">
+                    <Line options={optionsHistorico} data={dataHistoricos} ref={historicoRef}/>
+                </div>
+                :
+                <h2>No hay información de la actividad de los alumnos en este cohorte</h2>
+                :
+            null
+        }
         {
             filtro === 2 ? 
                 dataMaterias && optionsMaterias ?

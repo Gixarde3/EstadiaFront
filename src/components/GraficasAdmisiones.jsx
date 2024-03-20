@@ -108,14 +108,6 @@ function GraficasAdmisiones() {
                     },
                 }
             );
-            console.log(admisiones.map((admision, index)=>(
-                {
-                    label: 'Total',
-                    data: [admision.total],
-                    backgroundColor: colores[index],
-                    borderColor: colores[index],
-                }
-            )));
             setDataAdmisiones(
                 {
                     labels: admisiones.map((admision)=>admision.anio),
@@ -181,8 +173,7 @@ function GraficasAdmisiones() {
     return (
     <>
         <h1>Gráficas de admisiones en general</h1>
-        <h2>Filtro el tipo de gráfica</h2>
-        <Filter filters={["Fichas vendidas", "Trámites completos", "Exámenes presentados", "número de alumnos aprobados en CENEVAL"]} setValue={(value)=>setFilter(value)}/>
+        
         <h2>Selecciona un rango para ver l@s {filtrosLargos[filter]} dentro de ese rango de cohortes</h2>
             <form action="" className="dashboardForm">
             <label htmlFor="anio1">Desde el: </label>
@@ -200,6 +191,8 @@ function GraficasAdmisiones() {
                 <option value="IFI">ingeniería financiera</option>
             </select>
         </form>
+        <h2>Filtro el tipo de gráfica</h2>
+        <Filter filters={["Fichas vendidas", "Trámites completos", "Exámenes presentados", "número de alumnos aprobados en CENEVAL"]} setValue={(value)=>setFilter(value)}/>
         {
             dataAdmisiones && optionsAdmisiones &&
             <div className="result grafica">

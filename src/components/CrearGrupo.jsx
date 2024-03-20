@@ -62,9 +62,15 @@ function CrearGrupo() {
                 onChange={(e) => setNombre(e.target.value)} 
                 required/>
             <label htmlFor="letra">Letra del grupo</label>
-            <input type="text" maxLength={1} className="inputDashboard" 
+            <select type="text" maxLength={1} className="inputDashboard" 
                 onChange={(e) => setLetra(e.target.value)}
-            required/>
+            required>
+                <option value="A">A</option>
+                <option value="B">B</option>
+                <option value="C">C</option>
+                <option value="D">D</option>
+                <option value="E">E</option>
+            </select>
             <label htmlFor="grado">Grado del grupo</label>
             <input type="number" name="grado" id="grado" className="inputDashboard" 
                 onChange={(e) => setGrado(e.target.value)}

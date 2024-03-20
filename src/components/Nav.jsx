@@ -33,8 +33,13 @@ function Nav() {
         Cookies.remove('tipoUsuario');
         Cookies.remove('email');
         window.location.href = "/";
-    
     }
+    useEffect(()=>{
+        const expirationTime = new Date(new Date().getTime() + 15 * 60 * 1000);
+        Cookies.set("token", Cookies.get("token"), { expires: expirationTime });
+        Cookies.set("email", Cookies.get("email"), { expires: expirationTime });
+        Cookies.set("tipoUsuario", Cookies.get("tipoUsuario"), { expires: expirationTime });
+    });
     useEffect(()=>{
         const getUser = async() => {
             try{    
