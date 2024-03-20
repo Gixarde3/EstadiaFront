@@ -171,8 +171,7 @@ function GraficasBajas() {
     return (
     <>
         <h1>Gráficas de bajas en general</h1>
-        <h2>Filtro de tipo de bajas</h2>
-        <Filter filters={["Bajas definitivas", "Bajas temporales", "Bajas totales", "Todas las bajas"]} setValue={(value)=>setFilter(value)}/>
+        
         <h2>Selecciona un rango para ver las bajas dentro de ese rango de cohortes</h2>
             <form action="" className="dashboardForm">
             <label htmlFor="anio1">Desde el: </label>
@@ -190,6 +189,8 @@ function GraficasBajas() {
                 <option value="IFI">ingeniería financiera</option>
             </select>
         </form>
+        <h2>Filtro de tipo de bajas</h2>
+        <Filter filters={["Bajas definitivas", "Bajas temporales", "Bajas totales", "Todas las bajas"]} setValue={(value)=>setFilter(value)}/>
         {
             dataReprobados && optionsReprobados &&
             <div className="result grafica">
