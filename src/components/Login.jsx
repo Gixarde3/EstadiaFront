@@ -63,7 +63,10 @@ function Login() {
         }
     }
     return (
-        <main className="formulario-main">
+        <main className="formulario-main" style={{
+            paddingLeft: 0,
+            paddingTop: 0
+        }}>
             <img src="/img/logo.png" alt="Logo Upemor" id="logo_upemor" />
             <form onSubmit={handleSubmit}>
                 <img src="/img/user_big.png" alt="Icono de usuario" id="icon_user" />
