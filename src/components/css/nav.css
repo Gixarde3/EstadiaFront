@@ -6,6 +6,11 @@ nav{
     padding: 0.5rem;
     border-bottom: 5px solid black;
     background-color: var(--fondo-form);
+    position: fixed;
+    left: 0;
+    right: 0;
+    height: 5rem;
+    z-index: 100;
 }
 nav a{
     color: black;
@@ -58,8 +63,9 @@ aside{
     display: flex;
     flex-direction: column;
     background-color: var(--fondo-form);
-    position:fixed;
+    position: fixed;
     left: 0;
+    top: 5rem;
     border: 5px solid black;
     height: 100vh;
     border-top: 0;

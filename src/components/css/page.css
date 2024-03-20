@@ -12,6 +12,8 @@ main{
     align-items: center;
     justify-content: center;
     flex-direction: column;
+    padding-top: 5rem;
+    padding-left: 300px;
 }
 #logo_upemor{
     position: absolute;
