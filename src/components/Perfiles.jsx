@@ -137,8 +137,8 @@ function Perfiles() {
                 >
                     <option value="0">Usuario sin acceso</option>
                     <option value="3">Administrador</option>
-                    <option value="1">Director</option>
-                    <option value="2">Profesor/Coordinador</option>
+                    <option value="2">Director</option>
+                    <option value="1">Profesor/Coordinador</option>
                 </select>
                 <button className="login">Registrar usuario</button>
             </form>

@@ -22,7 +22,7 @@ function Usuarios() {
         setAlertOpen(false);
     }
     const [usuarios, setUsuarios] = useState([]);
-    const tiposUsuario = ["Usuario sin acceso", "Director", "Profesor/Coordinador", "Administrador"];
+    const tiposUsuario = ["Usuario sin acceso","Profesor/Coordinador",  "Director", "Administrador"];
     useEffect(() => {
         const getUsuarios = async() => {
             try{
