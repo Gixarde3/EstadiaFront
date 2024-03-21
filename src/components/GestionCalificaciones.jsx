@@ -5,9 +5,7 @@ function GestionCalificaciones() {
     const tipoUsuario = Cookies.get("tipoUsuario");
     return (<>
         <Calificaciones />
-        {
-           tipoUsuario === "3" ? <CrearCalificaciones/> : <></>
-        }
+        <CrearCalificaciones/>
     </>);
 }
 

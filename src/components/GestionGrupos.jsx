@@ -5,10 +5,8 @@ import CrearGrupo from "./CrearGrupo";
 function GestionGrupos() {
     const tipoUsuario = Cookies.get("tipoUsuario");
     return (<>
-    <Grupos />
-        {
-           tipoUsuario === "3" ? <CrearGrupo/> : <></>
-        }
+        <Grupos />
+        <CrearGrupo/>
     </>);
 }
 

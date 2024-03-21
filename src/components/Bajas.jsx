@@ -125,7 +125,7 @@ function Bajas() {
                             {baja.archivo && baja.procesado !== 1 ? <p><button className="login" onClick={() => (procesarCalificacion(baja.id))}>Procesar bajas</button></p> : null}
                             {baja.archivo ? <p><button className="login" onClick={() => (descargarArchivo(baja.id, baja.ar))}>Descargar bajas</button></p>: null}
                             {
-                                tipoUsuario === "3" ? (
+                                tipoUsuario >= 2 ? (
                                     <div className="opciones">
                                         <Link to={`editar/${baja.id}`}><img src={`${endpointLocal}img/edit.png`} alt="Icono de editar" 
                                             data-tooltip-id="tooltip"

@@ -137,7 +137,7 @@ function Admisiones() {
                             {admision.archivo && admision.procesado !== 1 ? <p><button className="login" onClick={() => procesarAdmisiones(admision.id)}>Procesar admisiones</button></p> : null}
                             {admision.archivo ? <p><button className="login" onClick={() => (descargarArchivo(admision.id, admision.archivo))}>Descargar admisiones</button></p>: null}
                             {
-                                tipoUsuario === "3" ? (
+                                tipoUsuario >= 1 ? (
                                     <div className="opciones">
                                         <Link to={`editar/${admision.id}`}><img src={`${endpointLocal}img/edit.png`} alt="Icono de editar" 
                                             data-tooltip-id="tooltip"

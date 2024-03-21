@@ -101,10 +101,18 @@ function EditarCalificaciones() {
                 value={anio}
             required/>
             <label htmlFor="carrera">Ingresa la carrera de estas calificaciones</label>
-            <input type="text" name="carrera" id="carrera" className="inputDashboard" 
+            <select type="text" name="carrera" id="carrera" className="inputDashboard" 
                 onChange={(e) => setCarrera(e.target.value)}
                 value={carrera}
-            required/>
+            required>
+                <option value="">Selecciona una carrera</option>
+                <option value="ITI">Ingeniería en Tecnologías de la Información</option>
+                <option value="IBT">Ingeniería en Biotecnología</option>
+                <option value="IET">Ingeniería Electrónica y Telecomunicaciones</option>
+                <option value="LAE">Licenciatura en Administración y Gestión empresarial</option>
+                <option value="IIN">Ingeniería industrial</option>
+                <option value="IFI">ingeniería financiera</option>
+            </select>
             <label htmlFor="Archivo" className="login" style={{marginBottom: "1rem"}}>Selecciona el archivo</label>
             <input type="file" name="Archivo" id="Archivo" className="inputDashboard" 
                 onChange={handleFileUpload} style={{display: "none"}}

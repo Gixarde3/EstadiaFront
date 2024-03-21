@@ -126,7 +126,7 @@ function Calificaciones() {
                             {calificacion.archivo ? <p><button className="login" onClick={() => (descargarArchivo(calificacion.id, calificacion.archivo))}>Descargar calificaciones</button></p>: null}
                             {calificacion.archivo && calificacion.procesado === 1 ? <p><button className="login"><Link to={`graficas/${calificacion.id}`} style={{color:'black', margin:0}}>Ver gráficas</Link></button></p> : null}
                             {
-                                tipoUsuario === "3" ? (
+                                tipoUsuario >= 1 ? (
                                     <div className="opciones">
                                         <Link to={`editar/${calificacion.id}`}><img src={`${endpointLocal}img/edit.png`} alt="Icono de editar" 
                                             data-tooltip-id="tooltip"

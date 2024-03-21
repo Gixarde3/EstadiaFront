@@ -81,9 +81,10 @@ function Grupos() {
                             <p>{grupo.nombre}</p>
                             <p>{grupo.plan}</p>
                             {grupo.grado ? <p>{grupo.grado}</p> : <p>Este grupo fue creado por importación, no tiene grado, porfavor agrega uno editando este grupo</p>}
+                            <p>Fecha del reporte: {grupo.updated_at}</p>
                             
                             {
-                                tipoUsuario === "3" ? (
+                                tipoUsuario >= 1 ? (
                                     <div className="opciones">
                                         <Link to={`editar/${grupo.id}`}><img src={`${endpointLocal}img/edit.png`} alt="Icono de editar" 
                                             data-tooltip-id="tooltip"

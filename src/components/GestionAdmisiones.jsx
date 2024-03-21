@@ -5,9 +5,7 @@ function GestionAdmisiones() {
     const tipoUsuario = Cookies.get("tipoUsuario");
     return (<>
         <Admisiones />
-        {
-           tipoUsuario === "3" ? <CrearAdmisiones/> : <></>
-        }
+        <CrearAdmisiones/> 
     </>);
 }
 

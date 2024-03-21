@@ -75,14 +75,14 @@ function Login() {
                     <label htmlFor="email"><img src="/img/user.png" alt="Icono de usuario" /></label>
                     <input type="email" name="email" id="email" placeholder="Ingresa tu correo electrónico" onChange={(event)=>(setEmail(event.target.value))} required/>
                 </div>
-                {badEmail === true ? <p className="badFieldMessage">El correo electrónico no es válido</p> : ""}
+                {badEmail === true ? <p className="badFieldMessage">Nombre de usuario incorrecto. Por favor, verifica y vuelve a intentar.</p> : ""}
                 <div className={"inputForm " + (badPassword === true? "badField" : "")}>
                     <label htmlFor="email"><img src="/img/icon_pass.png" alt="Icono de contraseña" /></label>
                     <input type={`${showPassword ? "text" : "password"}`} name="password" id="password" placeholder="Ingresa tu contraseña" onChange={(event)=>(setPassword(event.target.value))}required/>
                     <button type="button" onClick={() => (setShowPassword(!showPassword))}><img src={`/img/${showPassword ? "ver.png" : "no_ver.png"}`} alt="Icono para cambiar visibilidad" /></button>
                 </div>
                 {
-                    badPassword === true ? <p className="badFieldMessage">La contraseña no es válida</p> : ""
+                    badPassword === true ? <p className="badFieldMessage">Contraseña incorrecta. Vuelve a intentarlo o haz clic en Recupérala aquí para cambiarla.</p> : ""
                 }
                 <p>¿Olvidaste tu contraseña?<Link to="/recuperacion">Recupérala dando clic aquí</Link></p>
                 <p>¿No tienes cuenta?<Link to="/registrarse">Regístrate</Link></p>

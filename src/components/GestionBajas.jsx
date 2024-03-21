@@ -7,7 +7,7 @@ function GestionBajas() {
         
     <>
         <Bajas/>
-        {tipoUsuario === "3" ? <CrearBajas/> : <></>}
+        {tipoUsuario >= 2 ? <CrearBajas/> : <></>}
     </>);
 }
 

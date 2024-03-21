@@ -75,7 +75,7 @@ function EditarUsuario() {
                 openAlert("Usuario editado", "Se ha editado el usuario correctamente.", "success", "/dashboard");
             }else{
                 console.log(cookie);
-                openAlert("Error al editar al usuario", "No se ha podido editar al usuario, intenta más tarde." + response.data.message, "error", null);
+                openAlert("Error al editar al usuario", "No se ha podido editar al usuario, intenta más tarde. " + response.data.message, "error", null);
             }
         }catch(error){
             if(error.response !== undefined && error.response.status === 401){

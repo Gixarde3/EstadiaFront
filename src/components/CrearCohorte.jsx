@@ -34,7 +34,7 @@ function CrearCohorte() {
             if(response.data.success){
                 openAlert("Cohorte registrado", "El cohorte se registró correctamente", "success", null);
             }else{
-                openAlert("Error al registrar al cohorte", "Ocurrió un error inesperado al registrar al cohorte", "error", null);
+                openAlert("Error al registrar al cohorte", "Ocurrió un error inesperado al registrar al cohorte. " + response.data.message, "error", null);
             }
         }catch(error){
             if(error.response.status === 401){

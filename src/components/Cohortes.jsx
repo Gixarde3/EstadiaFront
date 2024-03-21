@@ -99,7 +99,7 @@ function Cohortes() {
                             <p>{cohorte.anio}</p>
                             <p>{cohortesNames[cohorte.periodo]}</p>    
                             <p><button className="login"><Link to={`graficas/${cohorte.id}`} style={{color:'black', margin:0}}>Ver gráficas</Link></button></p>                        {
-                                tipoUsuario === "3" ? (
+                                tipoUsuario >= 2 ? (
                                     <div className="opciones">
                                         <Link to={`editar/${cohorte.id}`}><img src={`${endpointLocal}img/edit.png`} alt="Icono de editar" 
                                             data-tooltip-id="tooltip"

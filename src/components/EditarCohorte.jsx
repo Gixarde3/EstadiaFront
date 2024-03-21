@@ -37,7 +37,7 @@ function EditarCohorte() {
             if(response.data.success){
                 openAlert("Cohorte editado", "El cohorte se editó correctamente", "success", "/dashboard/cohortes");
             }else{
-                openAlert("Error al editar al cohorte", "Ocurrió un error inesperado al editar el cohorte", "error", null);
+                openAlert("Error al editar al cohorte", "Ocurrió un error inesperado al editar el cohorte. " + response.data.message, "error", null);
             }
         }catch(error){
             if(error.response.status === 401){

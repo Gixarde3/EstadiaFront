@@ -69,11 +69,11 @@ function Perfiles() {
                 openAlert("Usuario registrado", "Se ha registrado el usuario correctamente.", "success");
             }else{
                 console.log(cookie);
-                openAlert("Error al registrar al usuario", "No se ha podido registrar al usuario, intenta más tarde." + response.data.message, "error", null);
+                openAlert("Error al registrar al usuario", "No se ha podido registrar al usuario, intenta más tarde. " + response.data.message, "error", null);
             }
         }catch(error){
             if(error.response !== undefined && error.response.status === 401){
-                openAlert("Error al registrar al usuario", "No se ha podido registrar al usuario, intenta más tarde.", "error", null);
+                openAlert("Error al registrar al usuario", "No se ha podido registrar al usuario, intenta más tarde. ", "error", null);
             }
             openAlert("Error de conexión", `La petición ha fallado por ${error}`, "error", null);
         }

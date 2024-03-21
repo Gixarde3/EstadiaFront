@@ -6,7 +6,7 @@ function GestionCohortes() {
     return (<>
     <Cohortes />
         {
-           tipoUsuario === "3" ? <CrearCohorte/> : <></>
+           tipoUsuario >= 2 ? <CrearCohorte/> : <></>
         }
     </>);
 }
