@@ -86,7 +86,8 @@ function GraficasCohortes() {
                 openAlert("Error al obtener los datos", "No se han podido obtener los datos por error: " + response.data.message, "error", null);
             }
         }catch(error){
-            openAlert("Error de conexión", `La petición ha fallado por ${error}`, "error", null);
+            //openAlert("Error de conexión", `La petición ha fallado por ${error}`, "error", null);
+            console.log(error);
         }
     }
     const getReprobados = async() => {
@@ -98,7 +99,8 @@ function GraficasCohortes() {
                 openAlert("Error al obtener los datos", "No se han podido obtener los datos por error: " + response.data.message, "error", null);
             }
         }catch(error){
-            openAlert("Error de conexión", `La petición ha fallado por ${error}`, "error", null);
+            //openAlert("Error de conexión", `La petición ha fallado por ${error}`, "error", null);
+            console.log(error);
         }
     }
     const getPeriodos = async() => {
@@ -110,7 +112,8 @@ function GraficasCohortes() {
                 openAlert("Error al obtener los datos", "No se han podido obtener los datos por error: " + response.data.message, "error", null);
             }
         }catch(error){
-            openAlert("Error de conexión", `La petición ha fallado por ${error}`, "error", null);
+            //openAlert("Error de conexión", `La petición ha fallado por ${error}`, "error", null);
+            console.log(error);
         }
     }
     const getCohorte = async() => {
@@ -122,7 +125,8 @@ function GraficasCohortes() {
                 openAlert("Error al obtener los datos", "No se han podido obtener los datos por error: " + response.data.message, "error", null);
             }
         }catch(error){
-            openAlert("Error de conexión", `La petición ha fallado por ${error}`, "error", null);
+            //openAlert("Error de conexión", `La petición ha fallado por ${error}`, "error", null);
+            console.log(error)
         }
     
     }
@@ -135,7 +139,7 @@ function GraficasCohortes() {
                 openAlert("Error al obtener los datos", "No se han podido obtener los datos por error: " + response.data.message, "error", null);
             }
         }catch(error){
-            openAlert("Error de conexión", `La petición ha fallado por ${error}`, "error", null);
+            //openAlert("Error de conexión", `La petición ha fallado por ${error}`, "error", null);
             console.log(error);
         }
     }
@@ -148,7 +152,8 @@ function GraficasCohortes() {
                 openAlert("Error al obtener los datos", "No se han podido obtener los datos por error: " + response.data.message, "error", null);
             }
         }catch(error){
-            openAlert("Error de conexión", `La petición ha fallado por ${error}`, "error", null);
+            //openAlert("Error de conexión", `La petición ha fallado por ${error}`, "error", null);
+            console.log(error);
         }
     }
     const getExamenes = async () => {
@@ -160,7 +165,8 @@ function GraficasCohortes() {
                 openAlert("Error al obtener los datos", "No se han podido obtener los datos por error: " + response.data.message, "error", null);
             }
         }catch(error){
-            openAlert("Error de conexión", `La petición ha fallado por ${error}`, "error", null);
+            //openAlert("Error de conexión", `La petición ha fallado por ${error}`, "error", null);
+            console.log(error);
         }
     }
     const getExamenesAprobados = async () => {
@@ -172,7 +178,8 @@ function GraficasCohortes() {
                 openAlert("Error al obtener los datos", "No se han podido obtener los datos por error: " + response.data.message, "error", null);
             }
         }catch(error){
-            openAlert("Error de conexión", `La petición ha fallado por ${error}`, "error", null);
+            //openAlert("Error de conexión", `La petición ha fallado por ${error}`, "error", null);
+            console.log(error);
         }
     }
     const getInscritosCurso = async () => {
@@ -184,7 +191,8 @@ function GraficasCohortes() {
                 openAlert("Error al obtener los datos", "No se han podido obtener los datos por error: " + response.data.message, "error", null);
             }
         }catch(error){
-            openAlert("Error de conexión", `La petición ha fallado por ${error}`, "error", null);
+            //openAlert("Error de conexión", `La petición ha fallado por ${error}`, "error", null);
+            console.log(error);
         }
     }
     const getAprobadosCurso = async () => {
@@ -196,7 +204,8 @@ function GraficasCohortes() {
                 openAlert("Error al obtener los datos", "No se han podido obtener los datos por error: " + response.data.message, "error", null);
             }
         }catch(error){
-            openAlert("Error de conexión", `La petición ha fallado por ${error}`, "error", null);
+            //openAlert("Error de conexión", `La petición ha fallado por ${error}`, "error", null);
+            console.log(error);
         }
     }
     useEffect(()=>{
