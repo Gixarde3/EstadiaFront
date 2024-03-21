@@ -39,6 +39,7 @@ function DBLogs() {
                         <h1>{log.operacion}</h1>
                         <p>{log.fecha}</p>
                         <p>{log.nombre}</p>
+                        <p>Creado el: {log.updated_at}</p>
                     </div>
                 </div>
             ))

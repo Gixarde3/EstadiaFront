@@ -120,6 +120,8 @@ function Calificaciones() {
                         <div className="info">
                             <h1>{calificacion.periodo}</h1>
                             <p>{calificacion.anio}</p>
+                            <p>Programa educativo: {calificacion.programa}</p>
+                            <p>Cargado el: {calificacion.updated_at}</p>
                             {calificacion.archivo ? <p>Archivo con las calificaciones: {calificacion.archivo}</p> : null}
                             {calificacion.archivo && calificacion.procesado === 1 ? <p>Calificaciones procesadas</p> : <p>Calificaciones no procesadas</p>}
                             {calificacion.archivo && calificacion.procesado !== 1 ? <p><button className="login" onClick={() => (procesarCalificacion(calificacion.id))}>Procesar calificaciones</button></p> : null}

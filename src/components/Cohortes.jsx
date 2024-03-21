@@ -98,6 +98,7 @@ function Cohortes() {
                             <h1>{cohorte.plan}</h1>
                             <p>{cohorte.anio}</p>
                             <p>{cohortesNames[cohorte.periodo]}</p>    
+                            <p>Cargado el: {cohorte.updated_at}</p>
                             <p><button className="login"><Link to={`graficas/${cohorte.id}`} style={{color:'black', margin:0}}>Ver gráficas</Link></button></p>                        {
                                 tipoUsuario >= 2 ? (
                                     <div className="opciones">

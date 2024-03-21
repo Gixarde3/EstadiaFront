@@ -12,6 +12,7 @@ function CrearCalificaciones() {
     const [alertOpen, setAlertOpen] = useState(false);
     const [periodo, setPeriodo] = useState("P");
     const [anio, setAnio] = useState(0);
+    const [programa, setPrograma] = useState("");
     const [carrera, setCarrera] = useState("");
     const openAlert = (title, message, kind, redirectRoute, asking, onAccept) => {
         setAlert({ title: title, message: message, kind: kind, redirectRoute: redirectRoute, asking: asking, onAccept: onAccept});
@@ -39,7 +40,8 @@ function CrearCalificaciones() {
             formData.append("token", token);
             formData.append("periodo", periodo);
             formData.append("anio", anio);
-            formData.append("carrera", carrera)
+            formData.append("carrera", carrera);
+            formData.append("programa", programa);
             const response = await axios.post(endpoint + "/calificacion", formData, {
                 headers: {
                     'Content-Type': 'multipart/form-data', // Configura el encabezado para enviar datos multipart/form-data
@@ -90,6 +92,11 @@ function CrearCalificaciones() {
                 <option value="IIN">Ingeniería industrial</option>
                 <option value="IFI">ingeniería financiera</option>
             </select>
+            <label htmlFor="programa">Ingresa el programa educativo</label>
+            <input type="text" name="programa" id="programa" className="inputDashboard"
+                onChange={(e) => setPrograma(e.target.value)}
+                value={programa}
+            required/>
             <label htmlFor="Archivo" className="login" style={{marginBottom: "1rem"}}>Selecciona el archivo</label>
             <input type="file" name="Archivo" id="Archivo" className="inputDashboard" 
                 onChange={handleFileUpload} style={{display: "none"}}

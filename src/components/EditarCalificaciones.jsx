@@ -13,6 +13,7 @@ function EditarCalificaciones() {
     const [archivo, setArchivo] = useState(null);
     const [nameFile, setNameFile]  = useState("");
     const [alert, setAlert] = useState(null);
+    const [programa, setPrograma] = useState("");
     const [alertOpen, setAlertOpen] = useState(false);
     const [periodo, setPeriodo] = useState("P");
     const [anio, setAnio] = useState(0);
@@ -34,6 +35,7 @@ function EditarCalificaciones() {
                     setAnio(response.data.calificacion.anio);
                     setCarrera(response.data.calificacion.carrera);
                     setNameFile(response.data.calificacion.archivo);
+                    setPrograma(response.data.calificacion.programa);
                 }else{
                     openAlert("Error al obtener la calificación", "No se ha podido obtener la calificación, intenta más tarde.", "error", null);
                 }
@@ -61,7 +63,8 @@ function EditarCalificaciones() {
             formData.append("token", token);
             formData.append("periodo", periodo);
             formData.append("anio", anio);
-            formData.append("carrera", carrera)
+            formData.append("carrera", carrera);
+            formData.append("programa", programa);
             const response = await axios.post(endpoint + "/calificacion/edit/" + id, formData, {
                 headers: {
                     'Content-Type': 'multipart/form-data', // Configura el encabezado para enviar datos multipart/form-data
@@ -113,6 +116,11 @@ function EditarCalificaciones() {
                 <option value="IIN">Ingeniería industrial</option>
                 <option value="IFI">ingeniería financiera</option>
             </select>
+            <label htmlFor="programa">Ingresa el programa educativo</label>
+            <input type="text" name="programa" id="programa" className="inputDashboard"
+                onChange={(e) => setPrograma(e.target.value)}
+                value={programa}
+            required/>
             <label htmlFor="Archivo" className="login" style={{marginBottom: "1rem"}}>Selecciona el archivo</label>
             <input type="file" name="Archivo" id="Archivo" className="inputDashboard" 
                 onChange={handleFileUpload} style={{display: "none"}}

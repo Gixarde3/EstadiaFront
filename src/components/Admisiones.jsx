@@ -134,6 +134,7 @@ function Admisiones() {
                     <div className="result" key={admision.id}>
                         <div className="info">
                             <h1>{periodos[admision.periodo] + " " + admision.anio}</h1>
+                            <p>Cargado el: {admision.updated_at}</p>
                             {admision.archivo && admision.procesado !== 1 ? <p><button className="login" onClick={() => procesarAdmisiones(admision.id)}>Procesar admisiones</button></p> : null}
                             {admision.archivo ? <p><button className="login" onClick={() => (descargarArchivo(admision.id, admision.archivo))}>Descargar admisiones</button></p>: null}
                             {

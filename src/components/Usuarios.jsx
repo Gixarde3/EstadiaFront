@@ -141,9 +141,10 @@ function Usuarios() {
                             <h1>{usuario.nombre + " " + usuario.apP + " " + usuario.apM}</h1>
                             <p>Número de empleado: {usuario.noEmp}</p>
                             <p>{usuario.email}</p>
+                            <p>Cargado el: {usuario.updated_at}</p>
                             <p>{tiposUsuario[usuario.tipoUsuario]}</p>
                             {
-                                tipoUsuario === "3" ? (
+                                tipoUsuario === "3" || usuario.token === Cookies.get("token") ? (
                                     <div className="opciones">
                                         <Link to={`editar/${usuario.id}`}>
                                             <img src={`${endpointLocal}img/edit.png`} alt="Icono de editar" 
