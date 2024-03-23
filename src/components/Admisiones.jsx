@@ -69,7 +69,7 @@ function Admisiones() {
     }
     const handleDelete = async(id) => {
         openAlert("¿Seguro de eliminar?", "Esta acción no se puede deshacer.", "question", null, true, async () => {
-            openAlert("Eliminando admision", "Espere un momento por favor", "loading");
+            openAlert("Eliminando admisión", "Espere un momento por favor", "loading");
             const data = {
                 id: id,
                 token: token
@@ -80,7 +80,7 @@ function Admisiones() {
                     closeAlert();
                     getAdmisiones();
                 }else{
-                    openAlert("Error al eliminar la admision", "No se ha podido eliminar la admision, intenta más tarde.", "error", null);
+                    openAlert("Error al eliminar la admisión", "No se ha podido eliminar la admisión, intenta más tarde.", "error", null);
                 }
             }catch(error){
                 openAlert("Error de conexión", `La petición ha fallado por ${error}`, "error", null);
@@ -142,12 +142,12 @@ function Admisiones() {
                                     <div className="opciones">
                                         <Link to={`editar/${admision.id}`}><img src={`${endpointLocal}img/edit.png`} alt="Icono de editar" 
                                             data-tooltip-id="tooltip"
-                                            data-tooltip-content="Editar admision"
+                                            data-tooltip-content="Editar admisión"
                                             data-tooltip-place="top"
                                         /></Link>
                                         <button type="button" className="deleteButton" onClick={()=>(handleDelete(admision.id))}
                                             data-tooltip-id="tooltip"
-                                            data-tooltip-content="Eliminar admision"
+                                            data-tooltip-content="Eliminar admisión"
                                             data-tooltip-place="top"
                                         ><img src={`${endpointLocal}img/close.webp`} alt="Eliminar"/></button>
                                     </div>

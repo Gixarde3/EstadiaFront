@@ -14,6 +14,7 @@ function Nav() {
     const [alert, setAlert] = useState(null);
     const [alertOpen, setAlertOpen] = useState(false);
     const [optionsOpened, setOptionsOpened] = useState(false);
+    const [notificacionesPendientes, setNotificacionesPendientes] = useState(0);
     const tiposUsuarios = [
         "Usuario sin acceso",
         "Director",
@@ -38,8 +39,19 @@ function Nav() {
         const expirationTime = new Date(new Date().getTime() + 15 * 60 * 1000);
         Cookies.set("token", Cookies.get("token"), { expires: expirationTime });
         Cookies.set("email", Cookies.get("email"), { expires: expirationTime });
-        Cookies.set("tipoUsuario", Cookies.get("tipoUsuario"), { expires: expirationTime });
+        Cookies.set("tipoUsuario", Cookies.get("tipoUsuario"), { expires: expirationTime });   
     });
+    const getNotificacionesPendientes = async () => {
+        const response = await axios.get(`${endpoint}/notificaciones/pendientes/${Cookies.get('token')}`);
+        console.log("Obteniendo notis");
+        console.log(response.data);
+        if(response.data.success){
+            setNotificacionesPendientes(response.data.cantidad);
+        }
+    }
+    useEffect(()=>{
+        console.log(notificacionesPendientes);
+    }, [notificacionesPendientes])
     useEffect(()=>{
         const getUser = async() => {
             try{    
@@ -54,6 +66,7 @@ function Nav() {
             }
         }
         getUser();
+        getNotificacionesPendientes();
     },[endpoint, token]);
     return (
         <>
@@ -69,6 +82,7 @@ function Nav() {
                     <Link to="/dashboard/BD">Base de datos</Link>
                     <Link to="/dashboard/bajasGraficas">Graficas de las bajas</Link>
                     <Link to="/dashboard/admisionesGraficas">Graficas de las admisiones</Link>
+                    <Link to="/dashboard/notificaciones" style={notificacionesPendientes > 0 ? {fontWeight: "bold"} : {}}>Notificaciones {((notificacionesPendientes > 0) ? "(" + notificacionesPendientes + ")" : "")}</Link>
                 </div>
                 <button id="button-down" onClick={()=>setOptionsOpened(!optionsOpened)}><img src={`${endpointLocal}img/flecha_abajo.png`} className={`${optionsOpened ? 'open' : ''}`}/></button>
                 <div className="perfil">
@@ -90,7 +104,7 @@ function Nav() {
                     <Link to="/dashboard/BD">Base de datos</Link>
                     <Link to="/dashboard/bajasGraficas">Graficas de las bajas</Link>
                     <Link to="/dashboard/admisionesGraficas">Graficas de las admisiones</Link>
-                    <Link to="/dashboard/notificaciones">Notificaciones</Link>
+                    <Link to="/dashboard/notificaciones" style={notificacionesPendientes > 0 ? {fontWeight: "bold"} : {}}>Notificaciones {((notificacionesPendientes > 0) ? "(" + notificacionesPendientes + ")" : "")}</Link>
                     <Link onClick={()=>logout()} style={{
                         fontWeight: "bold",
                     }}>Cerrar sesión</Link>
