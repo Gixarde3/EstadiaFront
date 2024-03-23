@@ -85,7 +85,7 @@ function Bajas() {
                 openAlert("Bajas procesadas", "Las bajas han sido procesadas", "success", null);
                 getBajas();
             }else{
-                openAlert("Error al procesar las bajas", "No se han podido procesar las bajas, intenta más tarde." + response.data.message, "error", null);
+                openAlert("Error al procesar las bajas", "No se han podido procesar las bajas, intenta más tarde. " + response.data.message, "error", null);
             }
         }catch(error){
             openAlert("Error de conexión", `La petición ha fallado por ${error}`, "error", null);
