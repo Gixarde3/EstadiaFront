@@ -12,7 +12,7 @@ function CrearGrupo() {
     const [periodo, setPeriodo] = useState("P");
     const [clave, setClave] = useState("");
     const [nombre, setNombre] = useState("");
-    const [letra, setLetra] = useState("");
+    const [letra, setLetra] = useState("A");
     const [grado, setGrado] = useState(0);
     const openAlert = (title, message, kind, redirectRoute, asking, onAccept) => {
         setAlert({ title: title, message: message, kind: kind, redirectRoute: redirectRoute, asking: asking, onAccept: onAccept});
@@ -31,8 +31,8 @@ function CrearGrupo() {
             formData.append("clave", clave);
             formData.append("nombre", nombre);
             formData.append("letra", letra);
+            formData.append("periodo", periodo);
             formData.append("grado", grado);
-            formData.append("cohorte", idCohorte);
             formData.append("token", token);
             const response = await axios.post(endpoint + "/grupo", formData);
             if(response.data.success){
@@ -41,6 +41,7 @@ function CrearGrupo() {
                 openAlert("Error al registrar el grupo", "Ocurrió un error inesperado al registrar el grupo: " + response.data.message, "error", null);
             }
         }catch(error){
+            console.log(error);
             if(error.response.status === 401){
                 openAlert("Error al registrar el grupo", "No tienes permiso para registrar el grupo", "error", null);
             }else{
